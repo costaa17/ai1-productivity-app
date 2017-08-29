@@ -7,6 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		241D9AF31E6C813000A3F51C /* ChoseTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 241D9AF21E6C813000A3F51C /* ChoseTaskViewController.swift */; };
+		2423ACE81E51579800C9E8F8 /* Tasks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2423ACE61E51579800C9E8F8 /* Tasks.storyboard */; };
+		2423ACEB1E515D1600C9E8F8 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2423ACEA1E515D1600C9E8F8 /* TodayViewController.swift */; };
+		24291DED1E7E1B94004965BC /* DayPlannerMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24291DEC1E7E1B94004965BC /* DayPlannerMain.swift */; };
+		24291DEF1E7F42F9004965BC /* ExistingPlansTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24291DEE1E7F42F9004965BC /* ExistingPlansTableView.swift */; };
+		24354CCC1E456EBB003300A7 /* PointsPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24354CCB1E456EBB003300A7 /* PointsPickerView.swift */; };
+		24354CD21E457469003300A7 /* useful.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24354CD11E457469003300A7 /* useful.swift */; };
+		24354CD41E459628003300A7 /* TasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24354CD31E459628003300A7 /* TasksTableViewController.swift */; };
+		24354CD61E45967B003300A7 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24354CD51E45967B003300A7 /* TaskCell.swift */; };
+		2441565F1E6FAE78006DA70E /* PlanTaskTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2441565E1E6FAE78006DA70E /* PlanTaskTableView.swift */; };
+		244682721E5E3EB9004E716D /* Today+Overdue.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 244682701E5E3EB9004E716D /* Today+Overdue.storyboard */; };
+		244682741E5E4049004E716D /* OrderByPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244682731E5E4049004E716D /* OrderByPicker.swift */; };
+		2446827A1E5E415E004E716D /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244682791E5E415E004E716D /* Extension.swift */; };
+		2446827C1E5E45E3004E716D /* CreatePlanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446827B1E5E45E3004E716D /* CreatePlanViewController.swift */; };
+		2446827E1E66290F004E716D /* AdjustPlanViewController .swift in Sources */ = {isa = PBXBuildFile; fileRef = 2446827D1E66290F004E716D /* AdjustPlanViewController .swift */; };
+		2448C81A1E481A3D003FFA20 /* SortPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448C8191E481A3D003FFA20 /* SortPicker.swift */; };
+		2448C81C1E49061F003FFA20 /* RepeatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2448C81B1E49061F003FFA20 /* RepeatViewController.swift */; };
 		244A136E1E4194EF00A8133A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244A136D1E4194EF00A8133A /* AppDelegate.swift */; };
 		244A13701E4194EF00A8133A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244A136F1E4194EF00A8133A /* ViewController.swift */; };
 		244A13731E4194EF00A8133A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 244A13711E4194EF00A8133A /* Main.storyboard */; };
@@ -15,6 +32,20 @@
 		244A137B1E4194EF00A8133A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 244A13791E4194EF00A8133A /* LaunchScreen.storyboard */; };
 		244A13861E4194EF00A8133A /* My_Great_Productivity_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244A13851E4194EF00A8133A /* My_Great_Productivity_AppTests.swift */; };
 		244A13911E4194F000A8133A /* My_Great_Productivity_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 244A13901E4194F000A8133A /* My_Great_Productivity_AppUITests.swift */; };
+		245A304D1E9820890015EE7F /* TaskDoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245A304C1E9820890015EE7F /* TaskDoneViewController.swift */; };
+		247DBA6F1E6C862E00F0B34E /* SelectTaskTableViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 247DBA6E1E6C862E00F0B34E /* SelectTaskTableViewData.swift */; };
+		249A08BA1E4671840053055E /* EditTaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249A08B91E4671840053055E /* EditTaskTableViewController.swift */; };
+		249A08BC1E469BE70053055E /* AmountDonePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249A08BB1E469BE70053055E /* AmountDonePicker.swift */; };
+		249A08BE1E46AD150053055E /* groupsPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249A08BD1E46AD150053055E /* groupsPicker.swift */; };
+		249B7B7C1E4535C9006979BA /* CreateTaskTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 249B7B7B1E4535C9006979BA /* CreateTaskTableViewController.swift */; };
+		24B2A2041E419A5800B0937C /* ListsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B2A2031E419A5800B0937C /* ListsTableViewController.swift */; };
+		24B2A2121E419DC400B0937C /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B2A2111E419DC400B0937C /* Colors.swift */; };
+		24B2A2141E41A31200B0937C /* CreateListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B2A2131E41A31200B0937C /* CreateListTableViewController.swift */; };
+		24B2A2161E41A71A00B0937C /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B2A2151E41A71A00B0937C /* ColorPickerView.swift */; };
+		24B2A21A1E4301EF00B0937C /* EditListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B2A2191E4301EF00B0937C /* EditListViewController.swift */; };
+		24C1CD2F1E45470000A15FFE /* PriorityPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24C1CD2E1E45470000A15FFE /* PriorityPickerView.swift */; };
+		24E15DC41E8599A400E5EE9A /* NowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E15DC31E8599A400E5EE9A /* NowViewController.swift */; };
+		24EA162E1E847ADD00BBF466 /* DayPlanner.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 24EA162C1E847ADD00BBF466 /* DayPlanner.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +66,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		241D9AF21E6C813000A3F51C /* ChoseTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChoseTaskViewController.swift; sourceTree = "<group>"; };
+		2423ACE71E51579800C9E8F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Tasks.storyboard; sourceTree = "<group>"; };
+		2423ACEA1E515D1600C9E8F8 /* TodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		24291DEC1E7E1B94004965BC /* DayPlannerMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayPlannerMain.swift; sourceTree = "<group>"; };
+		24291DEE1E7F42F9004965BC /* ExistingPlansTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExistingPlansTableView.swift; sourceTree = "<group>"; };
+		24354CCB1E456EBB003300A7 /* PointsPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointsPickerView.swift; sourceTree = "<group>"; };
+		24354CD11E457469003300A7 /* useful.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = useful.swift; sourceTree = "<group>"; };
+		24354CD31E459628003300A7 /* TasksTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksTableViewController.swift; sourceTree = "<group>"; };
+		24354CD51E45967B003300A7 /* TaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
+		2441565E1E6FAE78006DA70E /* PlanTaskTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanTaskTableView.swift; sourceTree = "<group>"; };
+		244682711E5E3EB9004E716D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "Base.lproj/Today+Overdue.storyboard"; sourceTree = "<group>"; };
+		244682731E5E4049004E716D /* OrderByPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderByPicker.swift; sourceTree = "<group>"; };
+		244682791E5E415E004E716D /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		2446827B1E5E45E3004E716D /* CreatePlanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePlanViewController.swift; sourceTree = "<group>"; };
+		2446827D1E66290F004E716D /* AdjustPlanViewController .swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AdjustPlanViewController .swift"; sourceTree = "<group>"; };
+		2448C8191E481A3D003FFA20 /* SortPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SortPicker.swift; sourceTree = "<group>"; };
+		2448C81B1E49061F003FFA20 /* RepeatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepeatViewController.swift; sourceTree = "<group>"; };
 		244A136A1E4194EF00A8133A /* My Great Productivity App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "My Great Productivity App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		244A136D1E4194EF00A8133A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		244A136F1E4194EF00A8133A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +97,20 @@
 		244A138C1E4194F000A8133A /* My Great Productivity AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "My Great Productivity AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		244A13901E4194F000A8133A /* My_Great_Productivity_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = My_Great_Productivity_AppUITests.swift; sourceTree = "<group>"; };
 		244A13921E4194F000A8133A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		245A304C1E9820890015EE7F /* TaskDoneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskDoneViewController.swift; sourceTree = "<group>"; };
+		247DBA6E1E6C862E00F0B34E /* SelectTaskTableViewData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTaskTableViewData.swift; sourceTree = "<group>"; };
+		249A08B91E4671840053055E /* EditTaskTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditTaskTableViewController.swift; sourceTree = "<group>"; };
+		249A08BB1E469BE70053055E /* AmountDonePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmountDonePicker.swift; sourceTree = "<group>"; };
+		249A08BD1E46AD150053055E /* groupsPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = groupsPicker.swift; sourceTree = "<group>"; };
+		249B7B7B1E4535C9006979BA /* CreateTaskTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTaskTableViewController.swift; sourceTree = "<group>"; };
+		24B2A2031E419A5800B0937C /* ListsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListsTableViewController.swift; sourceTree = "<group>"; };
+		24B2A2111E419DC400B0937C /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		24B2A2131E41A31200B0937C /* CreateListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateListTableViewController.swift; sourceTree = "<group>"; };
+		24B2A2151E41A71A00B0937C /* ColorPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
+		24B2A2191E4301EF00B0937C /* EditListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditListViewController.swift; sourceTree = "<group>"; };
+		24C1CD2E1E45470000A15FFE /* PriorityPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriorityPickerView.swift; sourceTree = "<group>"; };
+		24E15DC31E8599A400E5EE9A /* NowViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowViewController.swift; sourceTree = "<group>"; };
+		24EA162D1E847ADD00BBF466 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/DayPlanner.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +138,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2423ACE91E515CFB00C9E8F8 /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				2423ACEA1E515D1600C9E8F8 /* TodayViewController.swift */,
+				24B2A2111E419DC400B0937C /* Colors.swift */,
+				244A136D1E4194EF00A8133A /* AppDelegate.swift */,
+				244A136F1E4194EF00A8133A /* ViewController.swift */,
+				24B2A2031E419A5800B0937C /* ListsTableViewController.swift */,
+				24B2A2131E41A31200B0937C /* CreateListTableViewController.swift */,
+				24B2A2191E4301EF00B0937C /* EditListViewController.swift */,
+				249B7B7B1E4535C9006979BA /* CreateTaskTableViewController.swift */,
+				249A08B91E4671840053055E /* EditTaskTableViewController.swift */,
+				24354CD31E459628003300A7 /* TasksTableViewController.swift */,
+				2448C81B1E49061F003FFA20 /* RepeatViewController.swift */,
+				24B2A2151E41A71A00B0937C /* ColorPickerView.swift */,
+				24C1CD2E1E45470000A15FFE /* PriorityPickerView.swift */,
+				24354CCB1E456EBB003300A7 /* PointsPickerView.swift */,
+				249A08BB1E469BE70053055E /* AmountDonePicker.swift */,
+				249A08BD1E46AD150053055E /* groupsPicker.swift */,
+				2448C8191E481A3D003FFA20 /* SortPicker.swift */,
+				24354CD51E45967B003300A7 /* TaskCell.swift */,
+				24354CD11E457469003300A7 /* useful.swift */,
+			);
+			name = Tasks;
+			sourceTree = "<group>";
+		};
 		244A13611E4194EF00A8133A = {
 			isa = PBXGroup;
 			children = (
@@ -99,13 +187,18 @@
 		244A136C1E4194EF00A8133A /* My Great Productivity App */ = {
 			isa = PBXGroup;
 			children = (
-				244A136D1E4194EF00A8133A /* AppDelegate.swift */,
-				244A136F1E4194EF00A8133A /* ViewController.swift */,
+				24EA162F1E847AEA00BBF466 /* Day Planner */,
+				2423ACE91E515CFB00C9E8F8 /* Tasks */,
 				244A13711E4194EF00A8133A /* Main.storyboard */,
+				24EA162C1E847ADD00BBF466 /* DayPlanner.storyboard */,
+				244682701E5E3EB9004E716D /* Today+Overdue.storyboard */,
+				2423ACE61E51579800C9E8F8 /* Tasks.storyboard */,
 				244A13771E4194EF00A8133A /* Assets.xcassets */,
 				244A13791E4194EF00A8133A /* LaunchScreen.storyboard */,
 				244A137C1E4194EF00A8133A /* Info.plist */,
 				244A13741E4194EF00A8133A /* My_Great_Productivity_App.xcdatamodeld */,
+				24E15DC31E8599A400E5EE9A /* NowViewController.swift */,
+				245A304C1E9820890015EE7F /* TaskDoneViewController.swift */,
 			);
 			path = "My Great Productivity App";
 			sourceTree = "<group>";
@@ -126,6 +219,22 @@
 				244A13921E4194F000A8133A /* Info.plist */,
 			);
 			path = "My Great Productivity AppUITests";
+			sourceTree = "<group>";
+		};
+		24EA162F1E847AEA00BBF466 /* Day Planner */ = {
+			isa = PBXGroup;
+			children = (
+				244682731E5E4049004E716D /* OrderByPicker.swift */,
+				2446827B1E5E45E3004E716D /* CreatePlanViewController.swift */,
+				244682791E5E415E004E716D /* Extension.swift */,
+				2446827D1E66290F004E716D /* AdjustPlanViewController .swift */,
+				241D9AF21E6C813000A3F51C /* ChoseTaskViewController.swift */,
+				247DBA6E1E6C862E00F0B34E /* SelectTaskTableViewData.swift */,
+				2441565E1E6FAE78006DA70E /* PlanTaskTableView.swift */,
+				24291DEC1E7E1B94004965BC /* DayPlannerMain.swift */,
+				24291DEE1E7F42F9004965BC /* ExistingPlansTableView.swift */,
+			);
+			name = "Day Planner";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -239,7 +348,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				244A137B1E4194EF00A8133A /* LaunchScreen.storyboard in Resources */,
+				2423ACE81E51579800C9E8F8 /* Tasks.storyboard in Resources */,
+				24EA162E1E847ADD00BBF466 /* DayPlanner.storyboard in Resources */,
 				244A13781E4194EF00A8133A /* Assets.xcassets in Resources */,
+				244682721E5E3EB9004E716D /* Today+Overdue.storyboard in Resources */,
 				244A13731E4194EF00A8133A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -265,9 +377,37 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24B2A2141E41A31200B0937C /* CreateListTableViewController.swift in Sources */,
+				2446827E1E66290F004E716D /* AdjustPlanViewController .swift in Sources */,
+				24B2A2121E419DC400B0937C /* Colors.swift in Sources */,
+				24354CD21E457469003300A7 /* useful.swift in Sources */,
+				24354CD61E45967B003300A7 /* TaskCell.swift in Sources */,
+				24354CCC1E456EBB003300A7 /* PointsPickerView.swift in Sources */,
+				2448C81A1E481A3D003FFA20 /* SortPicker.swift in Sources */,
+				249A08BC1E469BE70053055E /* AmountDonePicker.swift in Sources */,
 				244A13701E4194EF00A8133A /* ViewController.swift in Sources */,
+				249A08BE1E46AD150053055E /* groupsPicker.swift in Sources */,
+				2446827C1E5E45E3004E716D /* CreatePlanViewController.swift in Sources */,
+				2441565F1E6FAE78006DA70E /* PlanTaskTableView.swift in Sources */,
 				244A136E1E4194EF00A8133A /* AppDelegate.swift in Sources */,
 				244A13761E4194EF00A8133A /* My_Great_Productivity_App.xcdatamodeld in Sources */,
+				24E15DC41E8599A400E5EE9A /* NowViewController.swift in Sources */,
+				245A304D1E9820890015EE7F /* TaskDoneViewController.swift in Sources */,
+				24291DED1E7E1B94004965BC /* DayPlannerMain.swift in Sources */,
+				24354CD41E459628003300A7 /* TasksTableViewController.swift in Sources */,
+				24B2A2161E41A71A00B0937C /* ColorPickerView.swift in Sources */,
+				24B2A21A1E4301EF00B0937C /* EditListViewController.swift in Sources */,
+				2423ACEB1E515D1600C9E8F8 /* TodayViewController.swift in Sources */,
+				24291DEF1E7F42F9004965BC /* ExistingPlansTableView.swift in Sources */,
+				249B7B7C1E4535C9006979BA /* CreateTaskTableViewController.swift in Sources */,
+				24C1CD2F1E45470000A15FFE /* PriorityPickerView.swift in Sources */,
+				247DBA6F1E6C862E00F0B34E /* SelectTaskTableViewData.swift in Sources */,
+				24B2A2041E419A5800B0937C /* ListsTableViewController.swift in Sources */,
+				2448C81C1E49061F003FFA20 /* RepeatViewController.swift in Sources */,
+				249A08BA1E4671840053055E /* EditTaskTableViewController.swift in Sources */,
+				2446827A1E5E415E004E716D /* Extension.swift in Sources */,
+				241D9AF31E6C813000A3F51C /* ChoseTaskViewController.swift in Sources */,
+				244682741E5E4049004E716D /* OrderByPicker.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +443,22 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		2423ACE61E51579800C9E8F8 /* Tasks.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2423ACE71E51579800C9E8F8 /* Base */,
+			);
+			name = Tasks.storyboard;
+			sourceTree = "<group>";
+		};
+		244682701E5E3EB9004E716D /* Today+Overdue.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				244682711E5E3EB9004E716D /* Base */,
+			);
+			name = "Today+Overdue.storyboard";
+			sourceTree = "<group>";
+		};
 		244A13711E4194EF00A8133A /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -317,6 +473,14 @@
 				244A137A1E4194EF00A8133A /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		24EA162C1E847ADD00BBF466 /* DayPlanner.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				24EA162D1E847ADD00BBF466 /* Base */,
+			);
+			name = DayPlanner.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -419,6 +583,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 537E9MH96M;
 				INFOPLIST_FILE = "My Great Productivity App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "toiavalle.My-Great-Productivity-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -432,6 +597,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 537E9MH96M;
 				INFOPLIST_FILE = "My Great Productivity App/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "toiavalle.My-Great-Productivity-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -516,6 +682,7 @@
 				244A13971E4194F000A8133A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		244A13981E4194F000A8133A /* Build configuration list for PBXNativeTarget "My Great Productivity AppTests" */ = {
 			isa = XCConfigurationList;
@@ -524,6 +691,7 @@
 				244A139A1E4194F000A8133A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		244A139B1E4194F000A8133A /* Build configuration list for PBXNativeTarget "My Great Productivity AppUITests" */ = {
 			isa = XCConfigurationList;
@@ -532,6 +700,7 @@
 				244A139D1E4194F000A8133A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

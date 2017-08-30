@@ -17,20 +17,15 @@ class TodayViewController: UIViewController {
         tableView.delegate = tableView
         tableView.dataSource = tableView
         tableView.parent = self
+        
         let longpress = UILongPressGestureRecognizer(target: tableView, action: Selector(("longPressGestureRecognized:")))
         tableView.addGestureRecognizer(longpress)
+        
         tableView.reloadData()
     }
     
     @IBAction func backButton(_ sender: Any) {
-        if curArr.count > 0{
-            curArr.removeLast()
-        }
-        if curArr.count == 0{
-            cur = nil
-        }else{
-            cur = curArr.last
-        }
+        backButtonUpdateCur()
         //self.navigationController?.dismiss(animated: true)
         dismiss(animated: true)
     }

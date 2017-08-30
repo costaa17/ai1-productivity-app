@@ -21,7 +21,7 @@ class TasksTableViewController: UITableView, UITableViewDelegate, UITableViewDat
     @IBAction func checkButton2(_ sender: Any) {
         check(sender)
     }
-
+    
     @IBAction func checkButton3(_ sender: Any) {
         check(sender)
     }
@@ -29,40 +29,35 @@ class TasksTableViewController: UITableView, UITableViewDelegate, UITableViewDat
     @IBAction func checkButton4(_ sender: Any) {
         check(sender)
     }
-
+    
     func check(_ sender: Any) {
         let task = arr[(sender as! UIButton).tag] as! Task
         if task.completed == 0 {
             task.completed = 1
             if task.repeatN != 0 {
-                guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-                    return
-                }
                 
-                let managedContext = appDelegate.persistentContainer.viewContext
-                
-                let entity = NSEntityDescription.entity(forEntityName: "Task",
-                                                        in: managedContext)!
-                
-                let newTask = NSManagedObject(entity: entity,
-                                              insertInto: managedContext) as! Task
-                for property in task.entity.propertiesByName {
-                    let any = task.value(forKey: property.key)
-                    newTask.setValue(any, forKey: property.key)
-                }
-                
-                newTask.due = combineDateWithTime(date: getNextRepeatDate(num: Int(task.repeatN), date: task.due! as Date)!, time: task.due! as Date)! as NSDate
-                newTask.completed = 0
-                
-                do {
-                    try managedContext.save()
-                } catch let error as NSError {
-                    print("Could not save. \(error), \(error.userInfo)")
+                if let managedContext = getManagedContext() {
+                    
+                    let entity = NSEntityDescription.entity(forEntityName: "Task",
+                                                            in: managedContext)!
+                    
+                    let newTask = NSManagedObject(entity: entity,
+                                                  insertInto: managedContext) as! Task
+                    for property in task.entity.propertiesByName {
+                        let any = task.value(forKey: property.key)
+                        newTask.setValue(any, forKey: property.key)
+                    }
+                    
+                    newTask.due = combineDateWithTime(date: getNextRepeatDate(num: Int(task.repeatN), date: task.due! as Date)!, time: task.due! as Date)! as NSDate
+                    newTask.completed = 0
+                    
+                    saveManagedContext(managedContext: managedContext)
+                    
+                    updateGroups()
+                    arr = groups
+                    self.reloadData()
                 }
             }
-            updateGroups()
-            arr = groups
-            self.reloadData()
         } else {
             task.completed = 0
         }
@@ -70,15 +65,14 @@ class TasksTableViewController: UITableView, UITableViewDelegate, UITableViewDat
             return
         }
         
-        let managedContext = appDelegate.persistentContainer.viewContext
-        do {
-            try managedContext.save()
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
+        if let managedContext = getManagedContext() {
+            
+            saveManagedContext(managedContext: managedContext)
+            
+            updateGroups()
+            arr = groups
+            self.reloadData()
         }
-        updateGroups()
-        arr = groups
-        self.reloadData()
     }
     func updateTaskDue() {
         
@@ -96,10 +90,10 @@ class TasksTableViewController: UITableView, UITableViewDelegate, UITableViewDat
         var c: UITableViewCell
         if task.duration == 0 && task.due == nil && task.points == 0{
             c = tableView.dequeueReusableCell(withIdentifier: "SimpleTaskCell",
-                                                 for: indexPath) as! TaskCell
+                                              for: indexPath) as! TaskCell
         } else {
             c = tableView.dequeueReusableCell(withIdentifier: "TaskCell",
-                                                 for: indexPath) as! TaskCell
+                                              for: indexPath) as! TaskCell
         }
         let cell = c as! TaskCell
         if cur != nil && (cur as! Group).name != "All" && (cur as! Group).name != "Today" && (cur as! Group).name != "This Week" && (cur as! Group).name != "Overdue"{
@@ -131,38 +125,38 @@ class TasksTableViewController: UITableView, UITableViewDelegate, UITableViewDat
         cell.checkButtonOutlet.tag = indexPath.row
         if task.due != nil && task.time == 1 {
             /*let formatter = DateFormatter()
-            formatter.dateFormat = "EEEE, MM/dd 'at' HH:mm"
-            let calendar = Calendar.current
-            let d = task.due
-            cell.due.isHidden = false
-            cell.due.text = formatter.string(from: d as! Date)
-            if calendar.isDateInToday(d as! Date) {
-                formatter.dateFormat = " 'at' HH:mm"
-                cell.due.text = "Today" + formatter.string(from: d as! Date)
-            }
-            
-            if calendar.isDateInTomorrow(d as! Date) {
-                formatter.dateFormat = " 'at' HH:mm"
-                cell.due.text = "Tomorrow" + formatter.string(from: d as! Date)
-            }*/
+             formatter.dateFormat = "EEEE, MM/dd 'at' HH:mm"
+             let calendar = Calendar.current
+             let d = task.due
+             cell.due.isHidden = false
+             cell.due.text = formatter.string(from: d as! Date)
+             if calendar.isDateInToday(d as! Date) {
+             formatter.dateFormat = " 'at' HH:mm"
+             cell.due.text = "Today" + formatter.string(from: d as! Date)
+             }
+             
+             if calendar.isDateInTomorrow(d as! Date) {
+             formatter.dateFormat = " 'at' HH:mm"
+             cell.due.text = "Tomorrow" + formatter.string(from: d as! Date)
+             }*/
             cell.due.isHidden = false
             let d = task.due! as Date
             cell.due.text = formatDate(date: d) + " at " + formatTime(date: d)
             
         }else if task.due != nil {
             /*let formatter = DateFormatter()
-            formatter.dateFormat = "EEEE, MM/dd"
-            let d = task.due
-            let calendar = Calendar.current
-            cell.due.isHidden = false
-            cell.due.text = formatter.string(from: d as! Date)
-            if calendar.isDateInToday(d as! Date) {
-                cell.due.text = "Today"
-            }
-            
-            if calendar.isDateInTomorrow(d as! Date) {
-                cell.due.text = "Tomorrow"
-            }*/
+             formatter.dateFormat = "EEEE, MM/dd"
+             let d = task.due
+             let calendar = Calendar.current
+             cell.due.isHidden = false
+             cell.due.text = formatter.string(from: d as! Date)
+             if calendar.isDateInToday(d as! Date) {
+             cell.due.text = "Today"
+             }
+             
+             if calendar.isDateInTomorrow(d as! Date) {
+             cell.due.text = "Tomorrow"
+             }*/
             cell.due.isHidden = false
             let d = task.due
             cell.due.text = formatDate(date: d! as Date)
@@ -225,19 +219,16 @@ class TasksTableViewController: UITableView, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-                return
-            }
             
-            let managedContext = appDelegate.persistentContainer.viewContext
-            managedContext.delete(arr[indexPath.row])
-            do {
-                try managedContext.save()
-            } catch {
+            if let managedContext = getManagedContext() {
                 
+                managedContext.delete(arr[indexPath.row])
+                
+                saveManagedContext(managedContext: managedContext)
+                
+                arr.remove(at: indexPath.row)
+                tableView.reloadData()
             }
-            arr.remove(at: indexPath.row)
-            tableView.reloadData()
         }
     }
     

@@ -258,166 +258,158 @@ func helper(showComp: Bool, sortBy: NSSortDescriptor?, pred: NSPredicate?){
     }
     if cur is Group {
         let g = cur as! Group
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
         
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Task")
-        let sortDescriptor0 =  NSSortDescriptor.init(key: "completed", ascending: true)
-        let sortDescriptor =  NSSortDescriptor.init(key: "index", ascending: true)
-        if sortBy == nil {
-            fetchRequest.sortDescriptors = [sortDescriptor0, sortDescriptor]
-        }else{
-            fetchRequest.sortDescriptors = [sortDescriptor0, sortBy!]
-        }
-        var predicate = NSPredicate(format: "group = %@", argumentArray: [g])
-        if (cur as! Group).name != "All" && (cur as! Group).name != "Today" && (cur as! Group).name != "This Week"{
-            if !showComp {
-                predicate = NSPredicate(format: "group = %@ && completed = %@", argumentArray: [g, 0])
-            }
-            fetchRequest.predicate = predicate
-        }
-        
-        if (cur as! Group).name == "Today" || (cur as! Group).name == "This Week"{
-            // Get the current calendar with local time zone
-            var calendar = Calendar.current
-            calendar.timeZone = NSTimeZone.local
+        if let managedContext = getManagedContext() {
             
-            // Get today's beginning & end
-            let dateFrom = calendar.startOfDay(for: Date()) // eg. 2016-10-10 00:00:00
-            var components = calendar.dateComponents([.year, .month, .day, .hour, .minute],from: dateFrom)
-            if (cur as! Group).name == "Today" {
-                components.day! += 1
-            } else {
-                components.day! += 7
-            }
-            let dateTo = calendar.date(from: components)! // eg. 2016-10-11 00:00:00
-            // Note: Times are printed in UTC. Depending on where you live it won't print 00:00:00 but it will work with UTC times which can be converted to local time
-            
-            // Set predicate as date being today's date
-            predicate = NSPredicate(format: "(%@ <= due) AND (due < %@)", argumentArray: [dateFrom, dateTo])
-            if !showComp{
-                predicate = NSPredicate(format: "(%@ <= due) AND (due < %@) && completed = %@", argumentArray: [dateFrom, dateTo, 0])
-            }
-            fetchRequest.predicate = predicate
-            //predicate = NSPredicate(format: "completed = %@", argumentArray: [0])
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Task")
+            let sortDescriptor0 =  NSSortDescriptor.init(key: "completed", ascending: true)
+            let sortDescriptor =  NSSortDescriptor.init(key: "index", ascending: true)
             if sortBy == nil {
-                fetchRequest.sortDescriptors = [sortDescriptor0, NSSortDescriptor.init(key: "due", ascending: true)]
+                fetchRequest.sortDescriptors = [sortDescriptor0, sortDescriptor]
+            }else{
+                fetchRequest.sortDescriptors = [sortDescriptor0, sortBy!]
             }
-        }
-        if (cur as! Group).name == "Overdue" {
-            // Get the current calendar with local time zone
-            var calendar = Calendar.current
-            calendar.timeZone = NSTimeZone.local
+            var predicate = NSPredicate(format: "group = %@", argumentArray: [g])
+            if (cur as! Group).name != "All" && (cur as! Group).name != "Today" && (cur as! Group).name != "This Week"{
+                if !showComp {
+                    predicate = NSPredicate(format: "group = %@ && completed = %@", argumentArray: [g, 0])
+                }
+                fetchRequest.predicate = predicate
+            }
             
-            // Get today's beginning
-            let dateFrom = calendar.startOfDay(for: Date()) // eg. 2016-10-10 00:00:00
-            let dateFrom2 = Date()
+            if (cur as! Group).name == "Today" || (cur as! Group).name == "This Week"{
+                // Get the current calendar with local time zone
+                var calendar = Calendar.current
+                calendar.timeZone = NSTimeZone.local
+                
+                // Get today's beginning & end
+                let dateFrom = calendar.startOfDay(for: Date()) // eg. 2016-10-10 00:00:00
+                var components = calendar.dateComponents([.year, .month, .day, .hour, .minute],from: dateFrom)
+                if (cur as! Group).name == "Today" {
+                    components.day! += 1
+                } else {
+                    components.day! += 7
+                }
+                let dateTo = calendar.date(from: components)! // eg. 2016-10-11 00:00:00
+                // Note: Times are printed in UTC. Depending on where you live it won't print 00:00:00 but it will work with UTC times which can be converted to local time
+                
+                // Set predicate as date being today's date
+                predicate = NSPredicate(format: "(%@ <= due) AND (due < %@)", argumentArray: [dateFrom, dateTo])
+                if !showComp{
+                    predicate = NSPredicate(format: "(%@ <= due) AND (due < %@) && completed = %@", argumentArray: [dateFrom, dateTo, 0])
+                }
+                fetchRequest.predicate = predicate
+                //predicate = NSPredicate(format: "completed = %@", argumentArray: [0])
+                if sortBy == nil {
+                    fetchRequest.sortDescriptors = [sortDescriptor0, NSSortDescriptor.init(key: "due", ascending: true)]
+                }
+            }
+            if (cur as! Group).name == "Overdue" {
+                // Get the current calendar with local time zone
+                var calendar = Calendar.current
+                calendar.timeZone = NSTimeZone.local
+                
+                // Get today's beginning
+                let dateFrom = calendar.startOfDay(for: Date()) // eg. 2016-10-10 00:00:00
+                let dateFrom2 = Date()
+                
+                predicate = NSPredicate(format: "(due < %@ AND time == 0) OR (due < %@ AND time == 1)", argumentArray: [dateFrom, dateFrom2])
+                if !showComp{
+                    predicate = NSPredicate(format: "((due < %@ AND time == 0) OR (due < %@ AND time == 1)) && completed = %@", argumentArray: [dateFrom, dateFrom2, 0])
+                }
+                fetchRequest.predicate = predicate
+                //predicate = NSPredicate(format: "completed = %@", argumentArray: [0])
+                if sortBy == nil {
+                    fetchRequest.sortDescriptors = [sortDescriptor0, NSSortDescriptor.init(key: "due", ascending: true)]
+                }
+            }
+            if (cur as! Group).name == "All" {
+                // Get the current calendar with local time zone
+                var calendar = Calendar.current
+                calendar.timeZone = NSTimeZone.local
+                
+                predicate = NSPredicate(format: "name != %@", argumentArray: ["Break"])
+                if !showComp{
+                    predicate = NSPredicate(format: "name != %@ && completed = %@", argumentArray: ["Break", 0])
+                }
+                fetchRequest.predicate = predicate
+                //predicate = NSPredicate(format: "completed = %@", argumentArray: [0])
+                if sortBy == nil {
+                    fetchRequest.sortDescriptors = [sortDescriptor0, NSSortDescriptor.init(key: "due", ascending: true)]
+                }
+            }
             
-            predicate = NSPredicate(format: "(due < %@ AND time == 0) OR (due < %@ AND time == 1)", argumentArray: [dateFrom, dateFrom2])
-            if !showComp{
-                predicate = NSPredicate(format: "((due < %@ AND time == 0) OR (due < %@ AND time == 1)) && completed = %@", argumentArray: [dateFrom, dateFrom2, 0])
+            if pred != nil {
+                let predicateCompound = NSCompoundPredicate.init(type: .and, subpredicates: [fetchRequest.predicate!, pred!])
+                fetchRequest.predicate = predicateCompound
             }
-            fetchRequest.predicate = predicate
-            //predicate = NSPredicate(format: "completed = %@", argumentArray: [0])
-            if sortBy == nil {
-                fetchRequest.sortDescriptors = [sortDescriptor0, NSSortDescriptor.init(key: "due", ascending: true)]
-            }
-        }
-        if (cur as! Group).name == "All" {
-            // Get the current calendar with local time zone
-            var calendar = Calendar.current
-            calendar.timeZone = NSTimeZone.local
             
-            predicate = NSPredicate(format: "name != %@", argumentArray: ["Break"])
-            if !showComp{
-                predicate = NSPredicate(format: "name != %@ && completed = %@", argumentArray: ["Break", 0])
-            }
-            fetchRequest.predicate = predicate
-            //predicate = NSPredicate(format: "completed = %@", argumentArray: [0])
-            if sortBy == nil {
-                fetchRequest.sortDescriptors = [sortDescriptor0, NSSortDescriptor.init(key: "due", ascending: true)]
-            }
-        }
-        
-        if pred != nil {
-            let predicateCompound = NSCompoundPredicate.init(type: .and, subpredicates: [fetchRequest.predicate!, pred!])
-            fetchRequest.predicate = predicateCompound
-        }
-        
-        do {
-            groups = try managedContext.fetch(fetchRequest)
-        } catch let error as NSError {
-            print("Could not fetch. \(error), \(error.userInfo)")
+            fetchGroups(fetchRequest: fetchRequest)
         }
     }
 }
 
 func getPercentageOfCompletedSubtasks(task: TaskSetUp) -> Int{
-    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-        return 0
-    }
     
-    let managedContext = appDelegate.persistentContainer.viewContext
-    
-    
-    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Task")
-    let predicate = NSPredicate(format: "group = %@", argumentArray: [task])
-    fetchRequest.predicate = predicate
-    var subts: [NSManagedObject] = []
-    do {
-        subts = try managedContext.fetch(fetchRequest)
-    } catch let error as NSError {
-        print("Could not fetch. \(error), \(error.userInfo)")
+    if let managedContext = getManagedContext() {
+        
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Task")
+        let predicate = NSPredicate(format: "group = %@", argumentArray: [task])
+        fetchRequest.predicate = predicate
+        var subts: [NSManagedObject] = []
+        do {
+            subts = try managedContext.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        if subts.count == 0 {
+            return 0
+        }
+        var percent: Int = 0
+        for s in subts {
+            percent += (getPercentDone(task: s as! Task))
+        }
+        percent /= subts.count
+        return percent
     }
-    if subts.count == 0 {
-        return 0
-    }
-    var percent: Int = 0
-    for s in subts {
-        percent += (getPercentDone(task: s as! Task))
-    }
-    percent /= subts.count
-    return percent
+    return 0
 }
 
 func getPercentageOfCompletedSubtasksPointsOrDur(task: TaskSetUp, pointsOrDur: Bool) -> Int{ //true = points, false = duration
-    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-        return 0
-    }
     
-    let managedContext = appDelegate.persistentContainer.viewContext
-    
-    
-    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Task")
-    let predicate = NSPredicate(format: "group = %@", argumentArray: [task])
-    fetchRequest.predicate = predicate
-    var subts: [NSManagedObject] = []
-    do {
-        subts = try managedContext.fetch(fetchRequest)
-    } catch let error as NSError {
-        print("Could not fetch. \(error), \(error.userInfo)")
-    }
-    var percent: Int = 0
-    var totalPoints = 0
-    if pointsOrDur {
-        for s in subts {
-            percent += (getPercentDone(task: s as! Task)) * Int((s as! Task).points)
-            totalPoints += Int((s as! Task).points)
+    if let managedContext = getManagedContext() {
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Task")
+        let predicate = NSPredicate(format: "group = %@", argumentArray: [task])
+        fetchRequest.predicate = predicate
+        var subts: [NSManagedObject] = []
+        do {
+            subts = try managedContext.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
         }
-    } else {
-        for s in subts {
-            percent += (getPercentDone(task: s as! Task)) * Int((s as! Task).duration)
-            totalPoints += Int((s as! Task).duration)
+        var percent: Int = 0
+        var totalPoints = 0
+        if pointsOrDur {
+            for s in subts {
+                percent += (getPercentDone(task: s as! Task)) * Int((s as! Task).points)
+                totalPoints += Int((s as! Task).points)
+            }
+        } else {
+            for s in subts {
+                percent += (getPercentDone(task: s as! Task)) * Int((s as! Task).duration)
+                totalPoints += Int((s as! Task).duration)
+            }
         }
+        if totalPoints == 0 {
+            return 0
+        }
+        percent /= totalPoints
+        return percent
     }
-    if totalPoints == 0 {
-        return 0
-    }
-    percent /= totalPoints
-    return percent
+    
+    return 0
 }
 
 func getPercentDone(task: TaskSetUp) -> Int{
@@ -448,4 +440,44 @@ func getPercentDone(task: TaskSetUp) -> Int{
         percent = 100
     }
     return percent
+}
+
+func backButtonUpdateCur(){
+    if curArr.count > 0{
+        curArr.removeLast()
+    }
+    if curArr.count == 0{
+        cur = nil
+    }else{
+        cur = curArr.last
+    }
+}
+
+func getManagedContext() -> NSManagedObjectContext?{
+    if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+        return appDelegate.persistentContainer.viewContext
+    }
+    print("error")
+    return nil
+}
+
+func saveManagedContext(managedContext: NSManagedObjectContext) -> Bool{
+    do {
+        try managedContext.save()
+    } catch let error as NSError {
+        print("Could not save. \(error), \(error.userInfo)")
+        return false
+    }
+    return true
+}
+
+func fetchGroups(fetchRequest: NSFetchRequest<NSManagedObject>){
+    
+    if let managedContext = getManagedContext() {
+        do {
+            groups = try managedContext.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+    }
 }

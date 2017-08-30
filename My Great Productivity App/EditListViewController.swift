@@ -82,7 +82,7 @@ class EditListViewController: UITableViewController {
             groupPicker.parent = self
             
             let longpress = UILongPressGestureRecognizer(target: subtasksTableView, action: Selector(("longPressGestureRecognized:")))
-             subtasksTableView.addGestureRecognizer(longpress)
+            subtasksTableView.addGestureRecognizer(longpress)
         }
         
     }
@@ -146,36 +146,26 @@ class EditListViewController: UITableViewController {
     }
     
     func saveList(){
-        if nameTextField.text != ""{
+        if nameTextField.text != "" {
             (cur as! Group).name = nameTextField.text!
             (cur as! Group).color = colorsArray[colorPicker.selectedRow(inComponent: 0)]
         }
         
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
-        let managedContext = appDelegate.persistentContainer.viewContext
-        if gr != nil{
-            let entity = NSEntityDescription.entity(forEntityName: "Task",
-                                                    in: managedContext)!
-            let task = NSManagedObject(entity: entity,
-                                       insertInto: managedContext) as! Task
-            task.name = (cur as! Group).name
-            task.color = (cur as! Group).color
-            task.group = gr
-            managedContext.delete(cur!)
-            cur = task
-            updateGroups()
-        }
-        
-        //let managedContext = appDelegate.persistentContainer.viewContext
-        //managedContext.delete(groups[indexPath.row])
-        //let managedContext = appDelegate.persistentContainer.viewContext
-        
-        do {
-            try managedContext.save()
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
+        if let managedContext = getManagedContext() {
+            if gr != nil{
+                let entity = NSEntityDescription.entity(forEntityName: "Task",
+                                                        in: managedContext)!
+                let task = NSManagedObject(entity: entity,
+                                           insertInto: managedContext) as! Task
+                task.name = (cur as! Group).name
+                task.color = (cur as! Group).color
+                task.group = gr
+                managedContext.delete(cur!)
+                cur = task
+                updateGroups()
+            }
+            
+            saveManagedContext(managedContext: managedContext)
         }
     }
     

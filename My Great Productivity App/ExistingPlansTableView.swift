@@ -18,25 +18,23 @@ class ExistingPlansTableView: UIViewController, UITableViewDelegate, UITableView
     
     override func viewWillAppear(_ animated: Bool) {
         // get all plans
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
+        
+        if let managedContext = getManagedContext() {
+            
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Plan")
+            
+            do {
+                
+                plans = try managedContext.fetch(fetchRequest)
+            } catch let error as NSError {
+                
+                print("Could not fetch. \(error), \(error.userInfo)")
+                
+            }
+            tableView.delegate = self
+            tableView.dataSource = self
+            tableView.reloadData()
         }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Plan")
-        
-        do {
-            
-            plans = try managedContext.fetch(fetchRequest)
-        } catch let error as NSError {
-            
-            print("Could not fetch. \(error), \(error.userInfo)")
-            
-        }
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.reloadData()
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -60,53 +58,45 @@ class ExistingPlansTableView: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //get tasks on selected plan
         var tasks: [NSManagedObject] = []
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
+        
+        if let managedContext = getManagedContext() {
+            
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "PlanIten")
+            
+            let predicate = NSPredicate(format: "plan == %@", argumentArray: [plans![indexPath.item]])
+            
+            let sortDescriptor =  NSSortDescriptor.init(key: "planIndex", ascending: true)
+            
+            fetchRequest.predicate = predicate
+            
+            fetchRequest.sortDescriptors = [sortDescriptor]
+            
+            row = indexPath.item;
+            
+            do {
+                
+                tasks = try managedContext.fetch(fetchRequest)
+                
+            } catch let error as NSError {
+                
+                print("Could not fetch. \(error), \(error.userInfo)")
+                
+            }
         }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "PlanIten")
-        
-        let predicate = NSPredicate(format: "plan == %@", argumentArray: [plans![indexPath.item]])
-        
-        let sortDescriptor =  NSSortDescriptor.init(key: "planIndex", ascending: true)
-        
-        fetchRequest.predicate = predicate
-        
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
-        row = indexPath.item;
-        
-        do {
-            
-            tasks = try managedContext.fetch(fetchRequest)
-            
-        } catch let error as NSError {
-            
-            print("Could not fetch. \(error), \(error.userInfo)")
-            
-        }
-        
         //edit plan
         performSegue(withIdentifier: "AdjustExistingPlan", sender: tasks)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-                return
-            }
             
-            let managedContext = appDelegate.persistentContainer.viewContext
-            managedContext.delete(plans![indexPath.row])
-            do {
-                try managedContext.save()
-            } catch {
+            if let managedContext = getManagedContext() {
                 
+                managedContext.delete(plans![indexPath.row])
+                saveManagedContext(managedContext: managedContext)
+                plans!.remove(at: indexPath.row)
+                tableView.reloadData()
             }
-            plans!.remove(at: indexPath.row)
-            tableView.reloadData()
         }
     }
     

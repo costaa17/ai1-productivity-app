@@ -190,49 +190,36 @@ class CreatePlanViewController:  UITableViewController {
     
     // MARK - Save
     func savePlan(){
-        
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
+        if let managedContext = getManagedContext() {
+            let entity = NSEntityDescription.entity(forEntityName: "Plan",
+                                                    in: managedContext)!
+            let plan = NSManagedObject(entity: entity,
+                                       insertInto: managedContext) as! Plan
+            plan.day = Date() as NSDate
+            if startAtLabel.text != "" {
+                plan.startTime = startAtPicker.date as NSDate
+            }
+            if endAtLabel.text != "" {
+                plan.endTime = endAtPicker.date as NSDate
+            }
+            if breaksEveryLabel.text != "" {
+                plan.breakEvery = Int64(getDuration(date: breaksEveryPicker.date))
+            }
+            if breaksDurationLabel.text != "" {
+                plan.breakDuration = Int64(getDuration(date: breaksDurationPicker.date))
+            }
+            
+            plan.orderBy = orderByLabel.text
+            
+            saveManagedContext(managedContext: managedContext)
+            thisPlan = plan
+            addTasksTo(plan: plan)
         }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        let entity = NSEntityDescription.entity(forEntityName: "Plan",
-                                                in: managedContext)!
-        let plan = NSManagedObject(entity: entity,
-                                   insertInto: managedContext) as! Plan
-        plan.day = Date() as NSDate
-        if startAtLabel.text != "" {
-            plan.startTime = startAtPicker.date as NSDate
-        }
-        if endAtLabel.text != "" {
-            plan.endTime = endAtPicker.date as NSDate
-        }
-        if breaksEveryLabel.text != "" {
-            plan.breakEvery = Int64(getDuration(date: breaksEveryPicker.date))
-        }
-        if breaksDurationLabel.text != "" {
-            plan.breakDuration = Int64(getDuration(date: breaksDurationPicker.date))
-        }
-        
-        
-        plan.orderBy = orderByLabel.text
-        
-        do {
-            try managedContext.save()
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
-        }
-        thisPlan = plan
-        addTasksTo(plan: plan)
     }
     
     
     func addTasksTo(plan: Plan){
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
         
-        let managedContext = appDelegate.persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Task")
         
         //get tasks on this day that were not yet completed
@@ -259,12 +246,8 @@ class CreatePlanViewController:  UITableViewController {
         fetchRequest.sortDescriptors = [sortDescriptor0, sortDescriptor1]
         
         
-
-        do {
-            tasksToday = try managedContext.fetch(fetchRequest)
-        } catch let error as NSError {
-            print("Could not fetch. \(error), \(error.userInfo)")
-        }
+        
+        fetchGroups(fetchRequest: fetchRequest)
         
         //set plan index to tasks
         for i in 0..<tasksToday.count {

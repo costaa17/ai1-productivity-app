@@ -15,7 +15,7 @@ class AdjustPlanViewController:  UIViewController {
     @IBOutlet weak var tableView: PlanTaskTableView!
     
     @IBOutlet weak var addBreakButton: UIBarButtonItem!
-
+    
     @IBOutlet weak var breakDurationStepper: UIStepper!
     
     @IBOutlet weak var endTimeLabel: UILabel!
@@ -62,37 +62,32 @@ class AdjustPlanViewController:  UIViewController {
     }
     
     @IBAction func addBreakButton(_ sender: Any) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
+        
+        if let managedContext = getManagedContext() {
+            
+            let entity = NSEntityDescription.entity(forEntityName: "Break",
+                                                    in: managedContext)!
+            
+            let breakEntity = NSManagedObject(entity: entity,
+                                              insertInto: managedContext) as! Break
+            breakEntity.duration = Int64(breakDurationStepper.value)
+            
+            breakEntity.name = "Break"
+            
+            planTasks!.append(breakEntity)
+            groups = planTasks!
+            tableView.arr = planTasks!
+            
+            let calendar = NSCalendar.current
+            let endTime = calendar.date(byAdding: .minute, value: Int(breakDurationStepper.value), to: curPlan!.endTime! as Date)
+            curPlan?.endTime = endTime as NSDate?
+            endTimeLabel.text = "End time: " + formatTime(date: curPlan!.endTime! as Date)
+            tableView.reloadData()
+            
+            saveManagedContext(managedContext: managedContext)
+            
+            tableView.reloadData()
         }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        let entity = NSEntityDescription.entity(forEntityName: "Break",
-                                                in: managedContext)!
-        
-        let breakEntity = NSManagedObject(entity: entity,
-                                   insertInto: managedContext) as! Break
-        breakEntity.duration = Int64(breakDurationStepper.value)
-        
-        breakEntity.name = "Break"
-        
-        planTasks!.append(breakEntity)
-        groups = planTasks!
-        tableView.arr = planTasks!
-        
-        let calendar = NSCalendar.current
-        let endTime = calendar.date(byAdding: .minute, value: Int(breakDurationStepper.value), to: curPlan!.endTime! as Date)
-        curPlan?.endTime = endTime as NSDate?
-        endTimeLabel.text = "End time: " + formatTime(date: curPlan!.endTime! as Date)
-        tableView.reloadData()
-        
-        do {
-            try managedContext.save()
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
-        }
-        tableView.reloadData()
     }
     
     //MARK: - add tasks
@@ -115,20 +110,20 @@ class AdjustPlanViewController:  UIViewController {
         curPlan?.planIten = NSSet(array: planTasks!)
         self.navigationController?.dismiss(animated: true, completion: nil)
         /*guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        do {
-            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "PlanIten")
-            
-            let predicate = NSPredicate(format: "plan == %@", argumentArray: [curPlan!])
-            fetchRequest.predicate = predicate
-            //let ts = try managedContext.fetch(fetchRequest)
-            try managedContext.save()
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
-        }*/
+         return
+         }
+         
+         let managedContext = appDelegate.persistentContainer.viewContext
+         do {
+         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "PlanIten")
+         
+         let predicate = NSPredicate(format: "plan == %@", argumentArray: [curPlan!])
+         fetchRequest.predicate = predicate
+         //let ts = try managedContext.fetch(fetchRequest)
+         try managedContext.save()
+         } catch let error as NSError {
+         print("Could not save. \(error), \(error.userInfo)")
+         }*/
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

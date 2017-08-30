@@ -169,87 +169,85 @@ class EditTaskTableViewController:  UITableViewController {
         let task = cur as! Task
         nameTextField.text = task.name
         //subtasksTableView.arr = Array(task.tasks!) as! [NSManagedObject]
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
         
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "List")
-        let predicate = NSPredicate(format: "name = %@", argumentArray: [task.name!])
-        fetchRequest.predicate = predicate
-        
-        do {
-            subtasksTableView.arr = try managedContext.fetch(fetchRequest)
-        } catch let error as NSError {
-            print("Could not fetch. \(error), \(error.userInfo)")
-        }
-
-        if task.due != nil {
-            dueDateLabel.text = formatDate(date: task.due! as Date)
-            dueDate = task.due as Date?
-            dueDateX.isHidden = false
-            dueDatePicker.setDate(task.due! as Date, animated: false)
-            if task.time == 1 {
-                timeLabel.text = formatTime(date: task.due! as Date)
-                timeDate = task.due as Date?
-                timeX.isHidden = false
-                timePicker.setDate(task.due! as Date, animated: false)
+        if let managedContext = getManagedContext() {
+            
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "List")
+            let predicate = NSPredicate(format: "name = %@", argumentArray: [task.name!])
+            fetchRequest.predicate = predicate
+            
+            do {
+                subtasksTableView.arr = try managedContext.fetch(fetchRequest)
+            } catch let error as NSError {
+                print("Could not fetch. \(error), \(error.userInfo)")
             }
-        } else {
-            timeTitle.textColor = UIColor.lightGray
-            repeatTitle.textColor = UIColor.lightGray
-        }
-        if task.duration != 0 {
-            durationLabel.text = formatDuration(duration: Int(task.duration))
-            durationX.isHidden = false
-        }
-        if task.points != 0 {
-            pointsPicker.selectRow(Int(task.points) - 1, inComponent: 0, animated: false)
-            pointsLabel.text = String(task.points)
-            pointsX.isHidden = false
-        }
-        if task.priority != nil {
-            let index = task.priority?.index((task.priority?.startIndex)!, offsetBy: 1)
-            let s = (task.priority?.substring(to: index!))!
-            //let index2 = task.priority?.index((task.priority?.startIndex)!, offsetBy: 1)
-            let s2 = (task.priority?.substring(from: index!))!
-            priorityPicker.selectRow(priorityPicker.arr[0].index(of:s)!, inComponent: 0, animated: false)
-            priorityPicker.selectRow( Int(s2)! - 1, inComponent: 1, animated: false)
-            priorityLabel.text = task.priority
-            priorityX.isHidden = false
-        }
-        colorPicker.selectRow(colorsArray.index(of: (cur as! Group).color!)!, inComponent: 0, animated: false)
-        updateColor(row: colorsArray.index(of: (cur as! Group).color!)!)
-        if task.notes != nil {
-            notes.text = task.notes
-        }
-        if task.amountDoneType != nil {
-            amountDoneType = task.amountDoneType
-            amountDone = Int(task.amountDone)
-            if  task.amountDoneType == "Duration" {
-                amountDoneLabel.text = formatDuration(duration: Int(task.amountDone))
-                amountDonePicker.selectRow(Int(task.amountDone), inComponent: 1, animated: false)
-            } else if task.amountDoneType == "Points"{
-                if task.duration == 0 {
-                    amountDonePicker.selectRow(0, inComponent: 0, animated: false)
-                } else {
-                    amountDonePicker.selectRow(1, inComponent: 0, animated: false)
+            
+            if task.due != nil {
+                dueDateLabel.text = formatDate(date: task.due! as Date)
+                dueDate = task.due as Date?
+                dueDateX.isHidden = false
+                dueDatePicker.setDate(task.due! as Date, animated: false)
+                if task.time == 1 {
+                    timeLabel.text = formatTime(date: task.due! as Date)
+                    timeDate = task.due as Date?
+                    timeX.isHidden = false
+                    timePicker.setDate(task.due! as Date, animated: false)
                 }
-                amountDonePicker.reloadAllComponents()
-                amountDonePicker.selectRow(Int(task.amountDone), inComponent: 1, animated: false)
-                amountDoneLabel.text =  String(task.amountDone) + " Points"
+            } else {
+                timeTitle.textColor = UIColor.lightGray
+                repeatTitle.textColor = UIColor.lightGray
             }
-            amountDoneX.isHidden = false
-        }
-        
-        if task.group != nil {
-            groupLabel.text = task.group?.name
-        }
-        
-        if task.repeatN != 0 {
-            repeatN = Int(task.repeatN)
-            repeatLabel.text = formatRepeat(num: repeatN!)
+            if task.duration != 0 {
+                durationLabel.text = formatDuration(duration: Int(task.duration))
+                durationX.isHidden = false
+            }
+            if task.points != 0 {
+                pointsPicker.selectRow(Int(task.points) - 1, inComponent: 0, animated: false)
+                pointsLabel.text = String(task.points)
+                pointsX.isHidden = false
+            }
+            if task.priority != nil {
+                let index = task.priority?.index((task.priority?.startIndex)!, offsetBy: 1)
+                let s = (task.priority?.substring(to: index!))!
+                //let index2 = task.priority?.index((task.priority?.startIndex)!, offsetBy: 1)
+                let s2 = (task.priority?.substring(from: index!))!
+                priorityPicker.selectRow(priorityPicker.arr[0].index(of:s)!, inComponent: 0, animated: false)
+                priorityPicker.selectRow( Int(s2)! - 1, inComponent: 1, animated: false)
+                priorityLabel.text = task.priority
+                priorityX.isHidden = false
+            }
+            colorPicker.selectRow(colorsArray.index(of: (cur as! Group).color!)!, inComponent: 0, animated: false)
+            updateColor(row: colorsArray.index(of: (cur as! Group).color!)!)
+            if task.notes != nil {
+                notes.text = task.notes
+            }
+            if task.amountDoneType != nil {
+                amountDoneType = task.amountDoneType
+                amountDone = Int(task.amountDone)
+                if  task.amountDoneType == "Duration" {
+                    amountDoneLabel.text = formatDuration(duration: Int(task.amountDone))
+                    amountDonePicker.selectRow(Int(task.amountDone), inComponent: 1, animated: false)
+                } else if task.amountDoneType == "Points"{
+                    if task.duration == 0 {
+                        amountDonePicker.selectRow(0, inComponent: 0, animated: false)
+                    } else {
+                        amountDonePicker.selectRow(1, inComponent: 0, animated: false)
+                    }
+                    amountDonePicker.reloadAllComponents()
+                    amountDonePicker.selectRow(Int(task.amountDone), inComponent: 1, animated: false)
+                    amountDoneLabel.text =  String(task.amountDone) + " Points"
+                }
+                amountDoneX.isHidden = false
+            }
+            
+            if task.group != nil {
+                groupLabel.text = task.group?.name
+            }
+            
+            if task.repeatN != 0 {
+                repeatN = Int(task.repeatN)
+                repeatLabel.text = formatRepeat(num: repeatN!)
+            }
         }
         
     }
@@ -537,70 +535,70 @@ class EditTaskTableViewController:  UITableViewController {
     
     func saveTask() {
         if nameTextField.text == "" {
-
+            
         }else{
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-                return
-            }
             
-            let managedContext = appDelegate.persistentContainer.viewContext
-            
-            let task = cur as! Task
-            
-            task.name = nameTextField.text
-            if timeDate != nil && dueDate != nil{
-                task.time = 1
-                task.due = combineDateWithTime(date: dueDate!, time: timeDate!) as NSDate!
-            }else{
-                task.time = 0
-                if dueDate != nil{
-                    task.due = dueDate as NSDate!
-                }else{
-                    task.due = nil
+            if let managedContext = getManagedContext() {
+                
+                let task = cur as! Task
+                
+                task.name = nameTextField.text
+                
+                if timeDate != nil && dueDate != nil {
+                    task.time = 1
+                    task.due = combineDateWithTime(date: dueDate!, time: timeDate!) as NSDate!
+                } else {
+                    task.time = 0
+                    if dueDate != nil {
+                        task.due = dueDate as NSDate!
+                    } else {
+                        task.due = nil
+                    }
                 }
-            }
-            if duration != nil {
-                task.duration = Int64(duration!)
-            }else{
-                task.duration = 0
-            }
-            if(priorityLabel.text != ""){
-                task.priority = priorityLabel.text
-            }else{
-                task.priority = nil
-            }
-            
-            if(pointsLabel.text != nil && pointsLabel.text != ""){
-                task.points = Int64(pointsLabel.text!)!
-            }else{
-                task.points = 0
-            }
-            
-            task.notes = notes.text!
-            task.color = colorString
-            task.completed = 0
-            
-            if repeatN != nil {
-                task.repeatN = Int32(repeatN!)
-            }
-            if amountDoneType != nil {
-                task.amountDoneType = amountDoneType
-                if amountDone != nil {
-                    task.amountDone = Int64(amountDone!)
-                }else{
+                
+                if duration != nil {
+                    task.duration = Int64(duration!)
+                } else {
+                    task.duration = 0
+                }
+                
+                if priorityLabel.text != "" {
+                    task.priority = priorityLabel.text
+                } else {
+                    task.priority = nil
+                }
+                
+                if pointsLabel.text != nil && pointsLabel.text != "" {
+                    task.points = Int64(pointsLabel.text!)!
+                } else {
+                    task.points = 0
+                }
+                
+                task.notes = notes.text!
+                task.color = colorString
+                task.completed = 0
+                
+                if repeatN != nil {
+                    task.repeatN = Int32(repeatN!)
+                }
+                
+                if amountDoneType != nil {
+                    task.amountDoneType = amountDoneType
+                    if amountDone != nil {
+                        task.amountDone = Int64(amountDone!)
+                    }else{
+                        task.amountDone = 0
+                    }
+                } else {
+                    task.amountDoneType = nil
                     task.amountDone = 0
                 }
-            } else {
-                task.amountDoneType = nil
-                task.amountDone = 0
-            }
-            if gr != nil {
-                task.group = gr as! Group?
-            }
-            do {
-                try managedContext.save()
-            } catch let error as NSError {
-                print("Could not save. \(error), \(error.userInfo)")
+                
+                if gr != nil {
+                    task.group = gr as! Group?
+                }
+                
+                saveManagedContext(managedContext: managedContext)
             }
         }
     }

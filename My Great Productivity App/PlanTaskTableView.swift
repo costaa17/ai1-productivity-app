@@ -104,10 +104,10 @@ class PlanTaskTableView: UITableView, UITableViewDelegate, UITableViewDataSource
             cell.priority.isHidden = true
         }
         /*if task.completed == 1 {
-            cell.check.isHidden = false
-        }else{
-            cell.check.isHidden = true
-        }*/
+         cell.check.isHidden = false
+         }else{
+         cell.check.isHidden = true
+         }*/
         
         if task.duration != 0 {
             if task.due == nil {
@@ -159,49 +159,43 @@ class PlanTaskTableView: UITableView, UITableViewDelegate, UITableViewDataSource
                 return
             }
             
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-                return
+            if let managedContext = getManagedContext() {
+                
+                let entity = NSEntityDescription.entity(forEntityName: "SplitTask",
+                                                        in: managedContext)!
+                
+                let newTask1 = NSManagedObject(entity: entity,
+                                               insertInto: managedContext) as! SplitTask
+                let newTask2 = NSManagedObject(entity: entity,
+                                               insertInto: managedContext) as! SplitTask
+                
+                for property in task.entity.propertiesByName {
+                    let any = task.value(forKey: property.key)
+                    newTask1.setValue(any, forKey: property.key)
+                    newTask2.setValue(any, forKey: property.key)
+                }
+                
+                //divide duration mantaining entire minutes
+                var dur1 = task.duration/2
+                let dur2 = task.duration/2
+                if task.duration % 2 == 1 {
+                    dur1 += 1
+                }
+                newTask1.duration = dur1
+                newTask2.duration = dur2
+                
+                if !(task is SplitTask) {
+                    newTask1.parentTask = task
+                    newTask2.parentTask = task
+                }
+                
+                saveManagedContext(managedContext: managedContext)
+                
+                self.arr.remove(at: editActionsForRowAt.row)
+                self.arr.append(newTask1)
+                self.arr.append(newTask2)
+                tableView.reloadData()
             }
-            
-            let managedContext = appDelegate.persistentContainer.viewContext
-            
-            let entity = NSEntityDescription.entity(forEntityName: "SplitTask",
-                                                    in: managedContext)!
-            
-            let newTask1 = NSManagedObject(entity: entity,
-                                           insertInto: managedContext) as! SplitTask
-            let newTask2 = NSManagedObject(entity: entity,
-                                           insertInto: managedContext) as! SplitTask
-            
-            for property in task.entity.propertiesByName {
-                let any = task.value(forKey: property.key)
-                newTask1.setValue(any, forKey: property.key)
-                newTask2.setValue(any, forKey: property.key)
-            }
-            
-            //divide duration mantaining entire minutes
-            var dur1 = task.duration/2
-            let dur2 = task.duration/2
-            if task.duration % 2 == 1 {
-                dur1 += 1
-            }
-            newTask1.duration = dur1
-            newTask2.duration = dur2
-            
-            if !(task is SplitTask) {
-                newTask1.parentTask = task
-                newTask2.parentTask = task
-            }
-            
-            do {
-                try managedContext.save()
-            } catch let error as NSError {
-                print("Could not save. \(error), \(error.userInfo)")
-            }
-            self.arr.remove(at: editActionsForRowAt.row)
-            self.arr.append(newTask1)
-            self.arr.append(newTask2)
-            tableView.reloadData()
         }
         split.backgroundColor = .blue
         // TODO: - split in 3
@@ -215,60 +209,55 @@ class PlanTaskTableView: UITableView, UITableViewDelegate, UITableViewDataSource
                 print("Task is already splited")
                 return
             }
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-                return
+            
+            if let managedContext = getManagedContext() {
+                
+                let entity = NSEntityDescription.entity(forEntityName: "SplitTask",
+                                                        in: managedContext)!
+                
+                let newTask1 = NSManagedObject(entity: entity,
+                                               insertInto: managedContext) as! SplitTask
+                let newTask2 = NSManagedObject(entity: entity,
+                                               insertInto: managedContext) as! SplitTask
+                let newTask3 = NSManagedObject(entity: entity,
+                                               insertInto: managedContext) as! SplitTask
+                
+                for property in task.entity.propertiesByName {
+                    let any = task.value(forKey: property.key)
+                    newTask1.setValue(any, forKey: property.key)
+                    newTask2.setValue(any, forKey: property.key)
+                    newTask3.setValue(any, forKey: property.key)
+                }
+                
+                //divide duration mantaining entire minutes
+                var dur1 = task.duration/3
+                var dur2 = task.duration/3
+                let dur3 = task.duration/3
+                if task.duration % 3 == 1 {
+                    dur1 += 1
+                }
+                if task.duration % 3 == 1 {
+                    dur1 += 1
+                    dur2 += 1
+                }
+                newTask1.duration = dur1
+                newTask2.duration = dur2
+                newTask3.duration = dur3
+                
+                if !(task is SplitTask) {
+                    newTask1.parentTask = task
+                    newTask2.parentTask = task
+                    newTask3.parentTask = task
+                }
+                
+                saveManagedContext(managedContext: managedContext)
+
+                self.arr.remove(at: editActionsForRowAt.row)
+                self.arr.append(newTask1)
+                self.arr.append(newTask2)
+                self.arr.append(newTask3)
+                tableView.reloadData()
             }
-            
-            let managedContext = appDelegate.persistentContainer.viewContext
-            
-            let entity = NSEntityDescription.entity(forEntityName: "SplitTask",
-                                                    in: managedContext)!
-            
-            let newTask1 = NSManagedObject(entity: entity,
-                                           insertInto: managedContext) as! SplitTask
-            let newTask2 = NSManagedObject(entity: entity,
-                                           insertInto: managedContext) as! SplitTask
-            let newTask3 = NSManagedObject(entity: entity,
-                                           insertInto: managedContext) as! SplitTask
-            
-            for property in task.entity.propertiesByName {
-                let any = task.value(forKey: property.key)
-                newTask1.setValue(any, forKey: property.key)
-                newTask2.setValue(any, forKey: property.key)
-                newTask3.setValue(any, forKey: property.key)
-            }
-            
-            //divide duration mantaining entire minutes
-            var dur1 = task.duration/3
-            var dur2 = task.duration/3
-            let dur3 = task.duration/3
-            if task.duration % 3 == 1 {
-                dur1 += 1
-            }
-            if task.duration % 3 == 1 {
-                dur1 += 1
-                dur2 += 1
-            }
-            newTask1.duration = dur1
-            newTask2.duration = dur2
-            newTask3.duration = dur3
-            
-            if !(task is SplitTask) {
-                newTask1.parentTask = task
-                newTask2.parentTask = task
-                newTask3.parentTask = task
-            }
-            
-            do {
-                try managedContext.save()
-            } catch let error as NSError {
-                print("Could not save. \(error), \(error.userInfo)")
-            }
-            self.arr.remove(at: editActionsForRowAt.row)
-            self.arr.append(newTask1)
-            self.arr.append(newTask2)
-            self.arr.append(newTask3)
-            tableView.reloadData()
         }
         split3.backgroundColor = UIColor.orange
         
@@ -283,6 +272,7 @@ class PlanTaskTableView: UITableView, UITableViewDelegate, UITableViewDataSource
             return [remove]
         }
         return [remove, split3, split]
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

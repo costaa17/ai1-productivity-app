@@ -17,22 +17,15 @@ class ListsTableViewController: UIViewController, UITableViewDelegate, UITableVi
     
     //Load core data to show
     override func viewWillAppear(_ animated: Bool) {
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "List")
         let sortDescriptor =  NSSortDescriptor.init(key: "index", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        do {
-            groups = try managedContext.fetch(fetchRequest)
-        } catch let error as NSError {
-            print("Could not fetch. \(error), \(error.userInfo)")
-        }
+        fetchGroups(fetchRequest: fetchRequest)
+        
         let longpress = UILongPressGestureRecognizer(target: self, action: #selector(ListsTableViewController.longPressGestureRecognized(_:)))
         tableView.addGestureRecognizer(longpress)
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.reloadData()
@@ -50,6 +43,7 @@ class ListsTableViewController: UIViewController, UITableViewDelegate, UITableVi
             static var cellIsAnimating : Bool = false
             static var cellNeedToShow : Bool = false
         }
+        
         struct Path {
             static var initialIndexPath : IndexPath? = nil
         }
@@ -97,6 +91,8 @@ class ListsTableViewController: UIViewController, UITableViewDelegate, UITableVi
                 if ((indexPath != nil) && (indexPath != Path.initialIndexPath)) {
                     groups.insert(groups.remove(at: Path.initialIndexPath!.row), at: indexPath!.row)
                     tableView.moveRow(at: Path.initialIndexPath!, to: indexPath!)
+                    
+                    //save new positions
                     for i in 0..<groups.count {
                         groups[i].setValue(i, forKeyPath: "index")
                     }
@@ -166,7 +162,7 @@ class ListsTableViewController: UIViewController, UITableViewDelegate, UITableVi
         return cell
     }
     
-    //Don't allow deleting All list
+    //Don't allow deleting initial lists
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let list = groups[indexPath.row] as! List
         if list.name == "All" || list.name == "Today" || list.name == "This Week" || list.name == "Overdue" {
@@ -197,24 +193,19 @@ class ListsTableViewController: UIViewController, UITableViewDelegate, UITableVi
         cur = groups[indexPath.row]
         curArr.append(cur!)
         updateGroups()
-        if (cur as! Group).name == "Today"{
+        
+        if (cur as! Group).name == "Today" {
             performSegue(withIdentifier: "showToday2", sender: self)
-        } else if (cur as! Group).name == "Overdue"{
+            
+        } else if (cur as! Group).name == "Overdue" {
             performSegue(withIdentifier: "ShowOverdue", sender: self)
+            
         } else {
             performSegue(withIdentifier: "ShowEditList", sender: self)
         }
-        print("Row \(indexPath.row) selected")
     }
     @IBAction func backButton(_ sender: Any) {
-        if curArr.count > 0{
-            curArr.removeLast()
-        }
-        if curArr.count == 0{
-            cur = nil
-        }else{
-            cur = curArr.last
-        }
+        backButtonUpdateCur()
         dismiss(animated: true)
     }
 

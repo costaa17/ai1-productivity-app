@@ -86,7 +86,7 @@ class CreateTaskTableViewController:  UITableViewController {
     
     override func viewDidLoad() {
         tableView.delegate = self
-         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(CreateTaskTableViewController.dismissKeyboard))
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(CreateTaskTableViewController.dismissKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         timeTitle.textColor = UIColor.lightGray
@@ -108,19 +108,18 @@ class CreateTaskTableViewController:  UITableViewController {
         groupsPicker.setupArrIncludingCur()
         groupsPicker.reloadAllComponents()
         oldCur = cur
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
+        
+        
+        if let managedContext = getManagedContext() {
+            
+            let entity = NSEntityDescription.entity(forEntityName: "Task",
+                                                    in: managedContext)!
+            
+            let task = NSManagedObject(entity: entity,
+                                       insertInto: managedContext) as! Task
+            cur = task
+            setupPickerViews()
         }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        let entity = NSEntityDescription.entity(forEntityName: "Task",
-                                                in: managedContext)!
-        
-        let task = NSManagedObject(entity: entity,
-                                   insertInto: managedContext) as! Task
-        cur = task
-        setupPickerViews()
     }
     
     func setupPickerViews(){
@@ -174,7 +173,7 @@ class CreateTaskTableViewController:  UITableViewController {
         tableView.beginUpdates()
         tableView.endUpdates()
     }
-
+    
     @IBAction func durationXButton(_ sender: Any) {
         duration = nil
         durationLabel.text = ""
@@ -194,7 +193,7 @@ class CreateTaskTableViewController:  UITableViewController {
         tableView.beginUpdates()
         tableView.endUpdates()
     }
-
+    
     @IBAction func pointsXButton(_ sender: Any) {
         pointsLabel.text = ""
         pointsX.isHidden = true
@@ -251,7 +250,7 @@ class CreateTaskTableViewController:  UITableViewController {
         colorCell.backgroundColor = color(color: colorsArray[row])
         self.colorString = colorsArray[row]
     }
-
+    
     override func updatePriority(priority: String) {
         self.priorityLabel.text = priority
         self.priorityX.isHidden = false
@@ -392,75 +391,71 @@ class CreateTaskTableViewController:  UITableViewController {
         if nameTextField.text == "" {
             
         }else{
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-                return
-            }
             
-            let managedContext = appDelegate.persistentContainer.viewContext
-            
-            let task = cur as! Task
-            cur = oldCur
-            
-            task.name = nameTextField.text
-            if timeDate != nil && dueDate != nil {
-                task.time = 1
-                task.due = combineDateWithTime(date: dueDate!, time: timeDate!) as NSDate!
-            }else{
-                task.time = 0
-                if dueDate != nil{
-                    task.due = dueDate as NSDate!
+            if let managedContext = getManagedContext() {
+                
+                let task = cur as! Task
+                cur = oldCur
+                
+                task.name = nameTextField.text
+                if timeDate != nil && dueDate != nil {
+                    task.time = 1
+                    task.due = combineDateWithTime(date: dueDate!, time: timeDate!) as NSDate!
+                    
+                } else {
+                    task.time = 0
+                    if dueDate != nil {
+                        task.due = dueDate as NSDate!
+                    }
                 }
-            }
-            if duration != nil {
-                task.duration = Int64(duration!)
-            }
-            if(priorityLabel.text != ""){
-                task.priority = priorityLabel.text
-            }
-            if(pointsLabel.text != ""){
-                task.points = Int64(pointsLabel.text!)!
-            }
-            if(notes.text != ""){
-                task.notes = notes.text!
-            }
-            if repeatN != nil {
-                task.repeatN = Int32(repeatN!)
-            }
-            task.color = colorString
-            var g = [NSManagedObject]()
-            if gr != nil && (gr as! Group).name != "Today" && (gr as! Group).name != "This Week" && (gr as! Group).name != "Overdue" && (gr as! Group).name != "None"{
-                task.group = gr as! Group?
-            } else {
-                let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "List")
-                let predicate = NSPredicate(format: "name = %@", argumentArray: ["All"])
-                fetchRequest.predicate = predicate
-                do {
-                    g = try managedContext.fetch(fetchRequest)
-                } catch let error as NSError {
-                    print("Could not fetch. \(error), \(error.userInfo)")
+                if duration != nil {
+                    task.duration = Int64(duration!)
                 }
-                task.group = g[0] as? Group
-            }
-            
-            if amountDoneType != nil {
-                task.amountDoneType = amountDoneType
-                if amountDone != nil {
-                    task.amountDone = Int64(amountDone!)
-                }else{
+                if(priorityLabel.text != "") {
+                    task.priority = priorityLabel.text
+                }
+                if(pointsLabel.text != "") {
+                    task.points = Int64(pointsLabel.text!)!
+                }
+                if(notes.text != "") {
+                    task.notes = notes.text!
+                }
+                if repeatN != nil {
+                    task.repeatN = Int32(repeatN!)
+                }
+                task.color = colorString
+                var g = [NSManagedObject]()
+                if gr != nil && (gr as! Group).name != "Today" && (gr as! Group).name != "This Week" && (gr as! Group).name != "Overdue" && (gr as! Group).name != "None"{
+                    task.group = gr as! Group?
+                } else {
+                    let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "List")
+                    let predicate = NSPredicate(format: "name = %@", argumentArray: ["All"])
+                    fetchRequest.predicate = predicate
+                    do {
+                        g = try managedContext.fetch(fetchRequest)
+                    } catch let error as NSError {
+                        print("Could not fetch. \(error), \(error.userInfo)")
+                    }
+                    task.group = g[0] as? Group
+                }
+                
+                if amountDoneType != nil {
+                    task.amountDoneType = amountDoneType
+                    if amountDone != nil {
+                        task.amountDone = Int64(amountDone!)
+                    } else {
+                        task.amountDone = 0
+                    }
+                } else {
+                    task.amountDoneType = nil
                     task.amountDone = 0
                 }
-            } else {
-                task.amountDoneType = nil
-                task.amountDone = 0
-            }
-            
-            task.completed = 0
-            
-            do {
-                try managedContext.save()
-                groups.append(task)
-            } catch let error as NSError {
-                print("Could not save. \(error), \(error.userInfo)")
+                
+                task.completed = 0
+                
+                if saveManagedContext(managedContext: managedContext) {
+                    groups.append(task)
+                }
             }
         }
     }
@@ -483,7 +478,7 @@ class CreateTaskTableViewController:  UITableViewController {
             
         }
         if indexPath == createSubtaskIndex {
-                performSegue(withIdentifier: "CreateSubtask", sender: self)
+            performSegue(withIdentifier: "CreateSubtask", sender: self)
         }
         selected = indexPath
         tableView.beginUpdates()

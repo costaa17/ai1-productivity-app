@@ -123,27 +123,23 @@ class NowViewController: UITableViewController {
         let dateTo = calendar.date(from: components)! // eg. 2016-10-11 00:00:00
         // Note: Times are printed in UTC. Depending on where you live it won't print 00:00:00 but it will work with UTC times which can be converted to local time
         
-        
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        
-        // Set predicate as date being today's date
-        let predicate = NSPredicate(format: "(%@ <= startTime) AND (startTime < %@)", argumentArray: [dateFrom, dateTo])
-        
-        
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Plan")
-        
-        do {
-            fetchRequest.predicate = predicate
+        if let managedContext = getManagedContext() {
             
-            //crashes if no plan on this date
-            try plan = managedContext.fetch(fetchRequest)[0] as! Plan
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
+            
+            // Set predicate as date being today's date
+            let predicate = NSPredicate(format: "(%@ <= startTime) AND (startTime < %@)", argumentArray: [dateFrom, dateTo])
+            
+            
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Plan")
+            
+            do {
+                fetchRequest.predicate = predicate
+                
+                //crashes if no plan on this date
+                try plan = managedContext.fetch(fetchRequest)[0] as! Plan
+            } catch let error as NSError {
+                print("Could not save. \(error), \(error.userInfo)")
+            }
         }
         
     }
@@ -199,11 +195,11 @@ class NowViewController: UITableViewController {
     @IBAction func minus5Button(_ sender: Any) {
         updateTaskDuration(minutes: -5)
     }
-
+    
     @IBAction func minus1Button(_ sender: Any) {
         updateTaskDuration(minutes: -1)
     }
-
+    
     @IBAction func plus1Button(_ sender: Any) {
         updateTaskDuration(minutes: 1)
     }
@@ -218,18 +214,10 @@ class NowViewController: UITableViewController {
         
         if(currentTask.duration <= 0){
             currentTask.duration = 0
-            
-        }
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
         }
         
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        do {
-            try managedContext.save()
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
+        if let managedContext = getManagedContext() {
+            saveManagedContext(managedContext: managedContext)
         }
         
     }
@@ -293,7 +281,7 @@ class NowViewController: UITableViewController {
         if player.playbackState == .playing {
             player.pause()
         } else {
-             player.play()
+            player.play()
         }
     }
     
@@ -325,34 +313,27 @@ class NowViewController: UITableViewController {
         }
         
         //All copied and pasted from AdjustPlanViewController
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
-        
-        let managedContext = appDelegate.persistentContainer.viewContext
-        
-        let entity = NSEntityDescription.entity(forEntityName: "Break",
-                                                in: managedContext)!
-        
-        let breakEntity = NSManagedObject(entity: entity,
-                                          insertInto: managedContext) as! Break
-        breakEntity.duration = Int64(breakDurationStepper.value)
-        
-        breakEntity.name = "Break"
-        
-        upNextTableView.arr.append(breakEntity)
-        groups = upNextTableView.arr
-        
-        let calendar = NSCalendar.current
-        let endTime = calendar.date(byAdding: .minute, value: Int(breakDurationStepper.value), to: plan!.endTime! as Date)
-        plan?.endTime = endTime as NSDate?
-        planEndTime.text = "End time: " + formatTime(date: plan!.endTime! as Date)
-        upNextTableView.reloadData()
-        
-        do {
-            try managedContext.save()
-        } catch let error as NSError {
-            print("Could not save. \(error), \(error.userInfo)")
+        if let managedContext = getManagedContext() {
+            
+            let entity = NSEntityDescription.entity(forEntityName: "Break",
+                                                    in: managedContext)!
+            
+            let breakEntity = NSManagedObject(entity: entity,
+                                              insertInto: managedContext) as! Break
+            breakEntity.duration = Int64(breakDurationStepper.value)
+            
+            breakEntity.name = "Break"
+            
+            upNextTableView.arr.append(breakEntity)
+            groups = upNextTableView.arr
+            
+            let calendar = NSCalendar.current
+            let endTime = calendar.date(byAdding: .minute, value: Int(breakDurationStepper.value), to: plan!.endTime! as Date)
+            plan?.endTime = endTime as NSDate?
+            planEndTime.text = "End time: " + formatTime(date: plan!.endTime! as Date)
+            upNextTableView.reloadData()
+            
+            saveManagedContext(managedContext: managedContext)
         }
     }
     

@@ -45,26 +45,21 @@ class CreateListTableViewController:  UITableViewController {
     
     func saveList(){
         if nametextField.text != ""{
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-                return
-            }
             
-            let managedContext = appDelegate.persistentContainer.viewContext
-            
-            let entity = NSEntityDescription.entity(forEntityName: "List",
-                                                    in: managedContext)!
-            
-            let list = NSManagedObject(entity: entity,
-                                       insertInto: managedContext)
-            
-            list.setValue(nametextField.text, forKeyPath: "name")
-            list.setValue(colorsArray[colorPicker.selectedRow(inComponent: 0)], forKey: "color")
-            
-            do {
-                try managedContext.save()
-                groups.append(list)
-            } catch let error as NSError {
-                print("Could not save. \(error), \(error.userInfo)")
+            if let managedContext = getManagedContext() {
+                
+                let entity = NSEntityDescription.entity(forEntityName: "List",
+                                                        in: managedContext)!
+                
+                let list = NSManagedObject(entity: entity,
+                                           insertInto: managedContext)
+                
+                list.setValue(nametextField.text, forKeyPath: "name")
+                list.setValue(colorsArray[colorPicker.selectedRow(inComponent: 0)], forKey: "color")
+                
+                if saveManagedContext(managedContext: managedContext){
+                    groups.append(list)
+                }
             }
         }
     }

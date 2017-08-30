@@ -40,21 +40,13 @@ class ChoseTaskViewController: UITableViewController {
         sortByPicker.reloadAllComponents()
         
         // get all tasks by loading the "All" list
-        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-            return
-        }
         
-        let managedContext = appDelegate.persistentContainer.viewContext
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "List")
         let predicate = NSPredicate(format: "name = %@", argumentArray: ["All"])
         fetchRequest.predicate = predicate
         
-        do {
-            groups = try managedContext.fetch(fetchRequest)
-        } catch let error as NSError {
-            print("Could not fetch. \(error), \(error.userInfo)")
-        }
+        fetchGroups(fetchRequest: fetchRequest)
         
         cur = groups[0] //All
         showCompleted = false

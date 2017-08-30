@@ -4,25 +4,25 @@ import CoreData
 
 extension UIViewController{
     
-    func updateColor (row: Int){
+    func updateColor (row: Int) {
         
     }
-    func updatePriority(priority: String){
+    func updatePriority(priority: String) {
         
     }
-    func updatePoints(points: Int){
+    func updatePoints(points: Int) {
         
     }
-    func updateDate(date: Date){
+    func updateDate(date: Date) {
         
     }
-    func updateTime(date: Date){
+    func updateTime(date: Date) {
         
     }
-    func updateDuration(date: Date){
+    func updateDuration(date: Date) {
         
     }
-    func editTask(index: Int){
+    func editTask(index: Int) {
         
     }
     func updateAmountDone(type: String, amount: Int) {
@@ -31,13 +31,13 @@ extension UIViewController{
     func updateGroup(group: NSManagedObject) {
         
     }
-    func updateSort(sortBy: String){
+    func updateSort(sortBy: String) {
         
     }
-    func updateRepeat(num: Int){
+    func updateRepeat(num: Int) {
         
     }
-    func updateOrderBy(row: Int){
+    func updateOrderBy(row: Int) {
         
     }
 }

@@ -172,14 +172,14 @@ class NowViewController: UITableViewController {
         }
     }
     
-    func nextTask(){
+    func nextTask() {
         if upNextTableView.arr.count == 0{
             print("plan finished")
             timer.invalidate()
             return
         }
         counter = 0
-        if(!firstTask){
+        if(!firstTask) {
             startButton(0)
             timerSet = true
         } else {
@@ -208,11 +208,11 @@ class NowViewController: UITableViewController {
         updateTaskDuration(minutes: 5)
     }
     
-    func updateTaskDuration(minutes: Int){
+    func updateTaskDuration(minutes: Int) {
         //current task duration decrease/increase min
         currentTask.duration += Int64(minutes)
         
-        if(currentTask.duration <= 0){
+        if currentTask.duration <= 0 {
             currentTask.duration = 0
         }
         

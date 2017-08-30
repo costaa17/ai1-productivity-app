@@ -13,7 +13,7 @@ import CoreData
 class ListsTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
     @IBOutlet var tableView: UITableView!
-     
+    
     
     //Load core data to show
     override func viewWillAppear(_ animated: Bool) {
@@ -165,7 +165,8 @@ class ListsTableViewController: UIViewController, UITableViewDelegate, UITableVi
     //Don't allow deleting initial lists
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let list = groups[indexPath.row] as! List
-        if list.name == "All" || list.name == "Today" || list.name == "This Week" || list.name == "Overdue" {
+        let initlists = ["All","Today","This Week","Overdue"]
+        if initlists.contains(list.name!) {
             return false
         }
         return true
@@ -174,18 +175,14 @@ class ListsTableViewController: UIViewController, UITableViewDelegate, UITableVi
     //Deleting
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-                return
-            }
-            let managedContext = appDelegate.persistentContainer.viewContext
-            managedContext.delete(groups[indexPath.row])
-            do {
-                try managedContext.save()
-            } catch {
+            
+            if let managedContext = getManagedContext() {
+                managedContext.delete(groups[indexPath.row])
+                saveManagedContext(managedContext: managedContext)
                 
+                groups.remove(at: indexPath.row)
+                tableView.reloadData()
             }
-            groups.remove(at: indexPath.row)
-            tableView.reloadData()
         }
     }
     
@@ -204,9 +201,12 @@ class ListsTableViewController: UIViewController, UITableViewDelegate, UITableVi
             performSegue(withIdentifier: "ShowEditList", sender: self)
         }
     }
+    
     @IBAction func backButton(_ sender: Any) {
+        
         backButtonUpdateCur()
         dismiss(animated: true)
+        
     }
-
+    
 }

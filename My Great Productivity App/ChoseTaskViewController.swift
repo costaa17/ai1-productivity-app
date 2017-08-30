@@ -93,7 +93,7 @@ class ChoseTaskViewController: UITableViewController {
         tableView.endUpdates()
     }
     
-    func choseTask(task: Task){
+    func choseTask(task: Task) {
         parentVC?.addTask = task
         parentVC2?.addTask = task
         self.navigationController?.popViewController(animated: true)

@@ -39,12 +39,12 @@ class PlanTaskTableView: UITableView, UITableViewDelegate, UITableViewDataSource
             var n = task as Group
             if task.group != nil{
                 n = task.group!;
-                while(n.group != nil){
+                while n.group != nil {
                     n = n.group!
                 }
             }
             
-            if(n.color == nil){
+            if n.color == nil {
                 n.color = "White"
             }
             cell.backgroundColor = color(color: ((n).color!))

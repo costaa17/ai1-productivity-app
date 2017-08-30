@@ -79,17 +79,17 @@ class RepeatViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 if indexPath == monthIndex {
                     selected.removeAll()
                     tableView.reloadData()
-                }else{
+                } else {
                     cell.accessoryType = .none
                     selected.remove(at: selected.index(of: indexPath)!)
                 }
-            }else{
+            } else {
                 if indexPath == monthIndex {
                     selected.removeAll()
                     tableView.reloadData()
                     selected.append(indexPath)
-                }else{
-                    if selected.contains(monthIndex){
+                } else {
+                    if selected.contains(monthIndex) {
                         selected.remove(at: selected.index(of: monthIndex)!)
                         tableView.reloadData()
                     }

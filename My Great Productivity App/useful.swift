@@ -151,14 +151,14 @@ func getDuration(date: Date) -> Int {
     formatter.dateFormat = "HH:mm"
     let index = formatter.string(from: date).index(formatter.string(from: date).startIndex, offsetBy: 2)
     duration = Int(formatter.string(from: date).substring(to: index))
-    if(duration != nil){
+    if duration != nil {
         duration = duration! * 60
     }
     let index2 = formatter.string(from: date).index(formatter.string(from: date).startIndex, offsetBy: 3)
-    if(duration != nil){
+    if duration != nil {
         let i = Int(formatter.string(from: date).substring(from: index2))!
         duration = duration! + i
-    }else{
+    } else {
         duration = Int(formatter.string(from: date).substring(from: index2))!
     }
     return duration!
@@ -232,7 +232,7 @@ func combineDateWithTime(date: Date, time: Date) -> Date? {
     return calendar.date(from: mergedComponments)
 }
 
-func updateGroups(){
+func updateGroups() {
     helper(showComp: showCompleted, sortBy: nil, pred: nil)
 }
 
@@ -240,19 +240,19 @@ func updateGroups(showComp: Bool) {
     helper(showComp: showComp, sortBy: nil, pred: nil)
 }
 
-func sortGroupsBy(sortBy: NSSortDescriptor){
+func sortGroupsBy(sortBy: NSSortDescriptor) {
     helper(showComp: showCompleted, sortBy: sortBy, pred: nil)
 }
 
-func sortGroupsByWithPred(sortBy: NSSortDescriptor, pred: NSPredicate){
+func sortGroupsByWithPred(sortBy: NSSortDescriptor, pred: NSPredicate) {
     helper(showComp: showCompleted, sortBy: sortBy, pred: pred)
 }
 
-func updateGroupsWithPred(pred: NSPredicate){
+func updateGroupsWithPred(pred: NSPredicate) {
     helper(showComp: showCompleted, sortBy: nil, pred: pred)
 }
 
-func helper(showComp: Bool, sortBy: NSSortDescriptor?, pred: NSPredicate?){
+func helper(showComp: Bool, sortBy: NSSortDescriptor?, pred: NSPredicate?) {
     for i in 0..<groups.count {
         (groups[i] as! Group).index = Int64(i)
     }
@@ -442,13 +442,13 @@ func getPercentDone(task: TaskSetUp) -> Int{
     return percent
 }
 
-func backButtonUpdateCur(){
-    if curArr.count > 0{
+func backButtonUpdateCur() {
+    if curArr.count > 0 {
         curArr.removeLast()
     }
-    if curArr.count == 0{
+    if curArr.count == 0 {
         cur = nil
-    }else{
+    } else {
         cur = curArr.last
     }
 }
@@ -461,7 +461,7 @@ func getManagedContext() -> NSManagedObjectContext?{
     return nil
 }
 
-func saveManagedContext(managedContext: NSManagedObjectContext) -> Bool{
+func saveManagedContext(managedContext: NSManagedObjectContext) -> Bool {
     do {
         try managedContext.save()
     } catch let error as NSError {
@@ -471,7 +471,7 @@ func saveManagedContext(managedContext: NSManagedObjectContext) -> Bool{
     return true
 }
 
-func fetchGroups(fetchRequest: NSFetchRequest<NSManagedObject>){
+func fetchGroups(fetchRequest: NSFetchRequest<NSManagedObject>) {
     
     if let managedContext = getManagedContext() {
         do {

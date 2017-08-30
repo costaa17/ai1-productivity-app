@@ -103,12 +103,12 @@ class TasksTableViewController: UITableView, UITableViewDelegate, UITableViewDat
             var n = task as Group
             if task.group != nil{
                 n = task.group!;
-                while(n.group != nil){
+                while n.group != nil {
                     n = n.group!
                 }
             }
             
-            if(n.color == nil){
+            if n.color == nil {
                 n.color = "White"
             }
             cell.backgroundColor = color(color: ((n).color!))
@@ -124,42 +124,17 @@ class TasksTableViewController: UITableView, UITableViewDelegate, UITableViewDat
         }
         cell.checkButtonOutlet.tag = indexPath.row
         if task.due != nil && task.time == 1 {
-            /*let formatter = DateFormatter()
-             formatter.dateFormat = "EEEE, MM/dd 'at' HH:mm"
-             let calendar = Calendar.current
-             let d = task.due
-             cell.due.isHidden = false
-             cell.due.text = formatter.string(from: d as! Date)
-             if calendar.isDateInToday(d as! Date) {
-             formatter.dateFormat = " 'at' HH:mm"
-             cell.due.text = "Today" + formatter.string(from: d as! Date)
-             }
-             
-             if calendar.isDateInTomorrow(d as! Date) {
-             formatter.dateFormat = " 'at' HH:mm"
-             cell.due.text = "Tomorrow" + formatter.string(from: d as! Date)
-             }*/
+        
             cell.due.isHidden = false
             let d = task.due! as Date
             cell.due.text = formatDate(date: d) + " at " + formatTime(date: d)
             
-        }else if task.due != nil {
-            /*let formatter = DateFormatter()
-             formatter.dateFormat = "EEEE, MM/dd"
-             let d = task.due
-             let calendar = Calendar.current
-             cell.due.isHidden = false
-             cell.due.text = formatter.string(from: d as! Date)
-             if calendar.isDateInToday(d as! Date) {
-             cell.due.text = "Today"
-             }
-             
-             if calendar.isDateInTomorrow(d as! Date) {
-             cell.due.text = "Tomorrow"
-             }*/
+        } else if task.due != nil {
+            
             cell.due.isHidden = false
             let d = task.due
             cell.due.text = formatDate(date: d! as Date)
+            
         }
         if task.priority != nil {
             cell.priority.isHidden = false
@@ -169,7 +144,7 @@ class TasksTableViewController: UITableView, UITableViewDelegate, UITableViewDat
         }
         if task.completed == 1 {
             cell.check.isHidden = false
-        }else{
+        } else {
             cell.check.isHidden = true
         }
         
@@ -201,7 +176,7 @@ class TasksTableViewController: UITableView, UITableViewDelegate, UITableViewDat
         if getPercentDone(task: task) != 0 {
             cell.donePercent.isHidden = false
             cell.donePercent.text = String(getPercentDone(task: task)) + "% done"
-        }else{
+        } else {
             cell.donePercent.isHidden = true
         }
         
@@ -218,7 +193,7 @@ class TasksTableViewController: UITableView, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == UITableViewCellEditingStyle.delete) {
+        if editingStyle == UITableViewCellEditingStyle.delete {
             
             if let managedContext = getManagedContext() {
                 

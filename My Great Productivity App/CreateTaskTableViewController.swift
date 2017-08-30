@@ -122,7 +122,7 @@ class CreateTaskTableViewController:  UITableViewController {
         }
     }
     
-    func setupPickerViews(){
+    func setupPickerViews() {
         //color
         colorPicker.parent = self
         colorPicker.dataSource = colorPicker
@@ -246,7 +246,7 @@ class CreateTaskTableViewController:  UITableViewController {
     }
     
     
-    override func updateColor (row: Int){
+    override func updateColor (row: Int) {
         colorCell.backgroundColor = color(color: colorsArray[row])
         self.colorString = colorsArray[row]
     }
@@ -310,7 +310,7 @@ class CreateTaskTableViewController:  UITableViewController {
         amountDonePicker.reloadAllComponents()
     }
     
-    func setPickerInitValue(){
+    func setPickerInitValue() {
         let dateIndex = IndexPath(item: 0, section: 1)
         let timeIndex = IndexPath(item: 1, section: 1)
         let durationIndex = IndexPath(item: 0, section: 2)
@@ -320,7 +320,7 @@ class CreateTaskTableViewController:  UITableViewController {
         let amountDoneIndex = IndexPath(item: 0, section: 5)
         switch selected! {
         case dateIndex:
-            if dueDateLabel.text != ""{
+            if dueDateLabel.text != "" {
                 break
             }
             dueDateLabel.text = formatDate(date: dueDatePicker.date)
@@ -361,7 +361,7 @@ class CreateTaskTableViewController:  UITableViewController {
             if (((cur as! Task).duration != 0 && (cur as! Task).points == 0) || ((cur as! Task).duration == 0 && (cur as! Task).points != 0)) && row == 1 {
                 s = "N of Subtasks"
             }
-            if(row == 2){
+            if(row == 2) {
                 s = "N of Subtasks"
             }
             
@@ -377,7 +377,7 @@ class CreateTaskTableViewController:  UITableViewController {
         }
     }
     
-    override func updateRepeat(num: Int){
+    override func updateRepeat(num: Int) {
         repeatN = num
         repeatLabel.text = formatRepeat(num: num)
     }

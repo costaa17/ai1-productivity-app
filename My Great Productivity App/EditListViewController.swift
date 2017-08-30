@@ -51,14 +51,18 @@ class EditListViewController: UITableViewController {
             }
             
             nameTextField.text = group.name
+            
             colorCell.backgroundColor = color(color: group.color!)
             colorPicker.delegate = colorPicker
             colorPicker.dataSource = colorPicker
             colorPicker.reloadAllComponents()
             colorPicker.selectRow(colorsArray.index(of: (cur as! Group).color!)!, inComponent: 0, animated: false)
             colorPicker.parent = self
+            
             showCompleted = false
+            
             groupPicker.selectRow(groupPicker.arr.count - 1, inComponent: 0, animated: false)
+            
             //sort by picker
             sortPicker.parent = self
             sortPicker.dataSource = sortPicker
@@ -145,7 +149,7 @@ class EditListViewController: UITableViewController {
         }
     }
     
-    func saveList(){
+    func saveList() {
         if nameTextField.text != "" {
             (cur as! Group).name = nameTextField.text!
             (cur as! Group).color = colorsArray[colorPicker.selectedRow(inComponent: 0)]
@@ -170,7 +174,7 @@ class EditListViewController: UITableViewController {
     }
     
     //Set cell color -> called when picker has changed
-    override func updateColor (row: Int){
+    override func updateColor (row: Int) {
         colorCell.backgroundColor = color(color: colorsArray[row])
     }
     

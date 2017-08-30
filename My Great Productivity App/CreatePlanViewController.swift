@@ -189,7 +189,7 @@ class CreatePlanViewController:  UITableViewController {
     
     
     // MARK - Save
-    func savePlan(){
+    func savePlan() {
         if let managedContext = getManagedContext() {
             let entity = NSEntityDescription.entity(forEntityName: "Plan",
                                                     in: managedContext)!
@@ -218,7 +218,7 @@ class CreatePlanViewController:  UITableViewController {
     }
     
     
-    func addTasksTo(plan: Plan){
+    func addTasksTo(plan: Plan) {
         
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Task")
         

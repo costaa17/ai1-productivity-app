@@ -14,7 +14,7 @@ class GroupsPicker: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     var parent: UIViewController?
     var arr: [NSManagedObject] = []
-    func setupArr(){
+    func setupArr() {
         
         if let managedContext = getManagedContext() {
             
@@ -43,7 +43,7 @@ class GroupsPicker: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSource {
         }
     }
     
-    func setupArrIncludingCur(){
+    func setupArrIncludingCur() {
         
         if let managedContext = getManagedContext() {
             

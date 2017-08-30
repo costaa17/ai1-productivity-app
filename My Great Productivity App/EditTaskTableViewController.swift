@@ -107,7 +107,7 @@ class EditTaskTableViewController:  UITableViewController {
          }*/
     }
     override func viewWillAppear(_ animated: Bool) {
-        if !(cur is Task){
+        if !(cur is Task) {
             self.navigationController?.popViewController(animated: false)
         }else{
             tableView.delegate = self
@@ -127,7 +127,7 @@ class EditTaskTableViewController:  UITableViewController {
         }
     }
     
-    func setupPickerViews(){
+    func setupPickerViews() {
         //color
         colorPicker.parent = self
         colorPicker.dataSource = colorPicker
@@ -165,7 +165,7 @@ class EditTaskTableViewController:  UITableViewController {
         durationPicker?.addTarget(self, action: #selector(durationPickerChanged(sender:)), for: .valueChanged)
     }
     
-    func setInitialValues(){
+    func setInitialValues() {
         let task = cur as! Task
         nameTextField.text = task.name
         //subtasksTableView.arr = Array(task.tasks!) as! [NSManagedObject]
@@ -369,7 +369,7 @@ class EditTaskTableViewController:  UITableViewController {
         }
     }
     
-    override func updateColor (row: Int){
+    override func updateColor (row: Int) {
         colorCell.backgroundColor = color(color: colorsArray[row])
         self.colorString = colorsArray[row]
     }
@@ -392,7 +392,7 @@ class EditTaskTableViewController:  UITableViewController {
         gr = group
     }
     
-    override func updateRepeat(num: Int){
+    override func updateRepeat(num: Int) {
         repeatN = num
         repeatLabel.text = formatRepeat(num: num)
     }
@@ -466,7 +466,7 @@ class EditTaskTableViewController:  UITableViewController {
         view.endEditing(true)
     }
     
-    func setPickerInitValue(){
+    func setPickerInitValue() {
         let dateIndex = IndexPath(item: 0, section: 2)
         let timeIndex = IndexPath(item: 1, section: 2)
         let durationIndex = IndexPath(item: 0, section: 3)
@@ -475,7 +475,7 @@ class EditTaskTableViewController:  UITableViewController {
         let amountDoneIndex = IndexPath(item: 0, section: 5)
         switch selected! {
         case dateIndex:
-            if dueDateLabel.text != ""{
+            if dueDateLabel.text != "" {
                 break
             }
             dueDateLabel.text = formatDate(date: dueDatePicker.date)
@@ -517,11 +517,11 @@ class EditTaskTableViewController:  UITableViewController {
             if (((cur as! Task).duration != 0 && (cur as! Task).points == 0) || ((cur as! Task).duration == 0 && (cur as! Task).points != 0)) && row == 1 {
                 s = "N of Subtasks"
             }
-            if(row == 2){
+            if row == 2 {
                 s = "N of Subtasks"
             }
             
-            if (cur as! Task).duration == 0 && (cur as! Task).duration == 0{
+            if (cur as! Task).duration == 0 && (cur as! Task).duration == 0 {
                 s = "N of Subtasks"
             }
             if amountDonePicker.numberOfComponents == 1 {

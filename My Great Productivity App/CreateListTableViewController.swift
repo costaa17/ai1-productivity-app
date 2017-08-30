@@ -39,11 +39,11 @@ class CreateListTableViewController:  UITableViewController {
     }
     
     //Set cell color -> called when picker has changed
-    override func updateColor (row: Int){
+    override func updateColor (row: Int) {
         colorCell.backgroundColor = color(color: colorsArray[row])
     }
     
-    func saveList(){
+    func saveList() {
         if nametextField.text != ""{
             
             if let managedContext = getManagedContext() {
@@ -57,7 +57,7 @@ class CreateListTableViewController:  UITableViewController {
                 list.setValue(nametextField.text, forKeyPath: "name")
                 list.setValue(colorsArray[colorPicker.selectedRow(inComponent: 0)], forKey: "color")
                 
-                if saveManagedContext(managedContext: managedContext){
+                if saveManagedContext(managedContext: managedContext) {
                     groups.append(list)
                 }
             }
